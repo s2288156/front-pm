@@ -15,7 +15,7 @@ export default {
   name: 'Dashboard',
   data() {
     return {
-      src: 'https://wcy-img.oss-cn-beijing.aliyuncs.com/images/framework.svg'
+      src: 'https://images.unsplash.com/photo-1489824904134-891ab64532f1?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1489&q=80'
     }
   },
   computed: {

@@ -75,6 +75,28 @@ export const constantRoutes = [
         meta: { title: '角色列表', icon: 'form' }
       }
     ]
+  },
+
+  {
+    path: '/pm',
+    component: Layout,
+    redirect: '/pm/group',
+    name: '项目管理',
+    meta: { title: '项目管理', icon: 'example' },
+    children: [
+      {
+        path: 'group',
+        name: 'Group',
+        component: () => import('@/views/pm/group/index'),
+        meta: { title: '组列表', icon: 'account' }
+      },
+      {
+        path: 'group1',
+        name: 'Group1',
+        component: () => import('@/views/sys/roles/index'),
+        meta: { title: '组列表1', icon: 'account' }
+      }
+    ]
   }
 ]
 
