@@ -39,6 +39,7 @@ const actions = {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data)
+        // TODO 权限加入后处理
         // commit('SET_TOKEN', data.access_token)
         // setToken(data.access_token)
         setToken(data)
