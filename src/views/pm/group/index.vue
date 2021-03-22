@@ -39,9 +39,12 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="200">
-        <template v-slot="{row}">
+        <template v-slot="{row,$index}">
           <el-button type="primary" size="mini" @click="handleEditRole(row)">
             {{ actionMap.edit }}
+          </el-button>
+          <el-button size="mini" type="denger" @click="handleDeleteGroup(row,$index)">
+            {{ actionMap.delete }}
           </el-button>
         </template>
       </el-table-column>
@@ -77,7 +80,7 @@
 </template>
 
 <script>
-import { list, add } from '@/api/group'
+import { list, add, deleteGroup } from '@/api/group'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -95,7 +98,8 @@ export default {
         edit: '编辑',
         assignUser: '分配用户',
         confirm: '确认',
-        cancel: '取消'
+        cancel: '取消',
+        delete: '删除'
       },
       listQuery: {
         page: 1,
@@ -159,6 +163,17 @@ export default {
     },
     handleAssignUser() {
       alert('handle assign user')
+    },
+    handleDeleteGroup(row, index) {
+      deleteGroup(row.id).then(() => {
+        this.$notify({
+          title: 'Success',
+          message: '组删除成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.list.splice(index, 1)
+      })
     }
   }
 }
