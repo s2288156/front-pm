@@ -15,7 +15,7 @@
         style="margin-left: 10px;"
         type="primary"
         icon="el-icon-edit"
-        @click="handleAddRole"
+        @click="handleAddGroup"
       >
         {{ actionMap.add }}
       </el-button>
@@ -31,7 +31,7 @@
       highlight-current-row
     >
       <el-table-column type="index" :index="1" align="center" label="No." width="95" />
-      <el-table-column prop="name" label="组名称" align="center" width="300" />
+      <el-table-column prop="name" label="组名称" align="center" />
       <el-table-column align="center" label="创建时间" width="250">
         <template v-slot="scope">
           <i class="el-icon-time" />
@@ -55,14 +55,34 @@
       @pagination="fetchData"
     />
 
+    <el-dialog :visible.sync="dialogGroupVisible" :title="actionMap[dialogStatus]">
+      <el-form ref="groupForm" :rules="rules" :model="groupFormData" label-position="left" label-width="100px">
+        <el-form-item v-show="dialogStatus==='update'" label="Id" prop="id">
+          <span>{{ groupFormData.id }}</span>
+        </el-form-item>
+        <el-form-item label="Name" prop="name">
+          <el-input v-model="groupFormData.name" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogGroupVisible = false">
+          {{ actionMap.cancel }}
+        </el-button>
+        <el-button type="primary" @click="addGroup">
+          {{ actionMap.confirm }}
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { list } from '@/api/group'
+import { list, add } from '@/api/group'
+import Pagination from '@/components/Pagination'
 
 export default {
-  name: 'GroupList',
+  name: 'Group',
+  components: { Pagination },
   data() {
     return {
       tableKey: 0,
@@ -73,24 +93,66 @@ export default {
         reload: '刷新',
         add: '新增',
         edit: '编辑',
-        assignUser: '分配用户'
+        assignUser: '分配用户',
+        confirm: '确认',
+        cancel: '取消'
       },
       listQuery: {
         page: 1,
         limit: 20
+      },
+      roles: {
+        name: [{ required: true, message: 'name is required', trigger: 'change' }]
+      },
+      dialogGroupVisible: false,
+      dialogStatus: '',
+      groupFormData: {
+        id: undefined,
+        name: undefined
       }
     }
   },
+  created() {
+    this.fetchData()
+  },
   methods: {
     fetchData() {
-      console.log('fetch data')
+      this.listLoading = true
       list(this.listQuery).then(response => {
         this.list = response.data
+        this.total = response.total
         this.listLoading = false
       })
     },
-    handleAddRole() {
-      alert('add role')
+    resetGroupFormData() {
+      this.groupFormData = {
+        id: undefined,
+        name: undefined
+      }
+    },
+    handleAddGroup() {
+      this.resetGroupFormData()
+      this.dialogStatus = 'add'
+      this.dialogGroupVisible = true
+      this.nextTick()(() => {
+        this.$refs['groupForm'].clearValidate()
+      })
+    },
+    addGroup() {
+      this.$refs['groupForm'].validate((valid) => {
+        if (valid) {
+          add(this.groupFormData).then(() => {
+            this.dialogGroupVisible = false
+            this.$notify({
+              title: 'Success',
+              message: '组添加成功',
+              type: 'success',
+              duration: 2000
+            })
+            this.fetchData()
+          })
+        }
+      })
     },
     handleEditRole() {
       alert('edit role')
@@ -98,9 +160,6 @@ export default {
     handleAssignUser() {
       alert('handle assign user')
     }
-  },
-  created() {
-    this.fetchData()
   }
 }
 </script>

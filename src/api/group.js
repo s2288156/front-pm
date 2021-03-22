@@ -7,3 +7,11 @@ export function list(query) {
     params: query
   })
 }
+
+export function add(data) {
+  return request({
+    url: '/group/add',
+    method: 'post',
+    data
+  })
+}
