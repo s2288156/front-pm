@@ -80,7 +80,7 @@
 </template>
 
 <script>
-import { list, add, deleteGroup } from '@/api/group'
+import { listGroup, add, deleteGroup } from '@/api/group'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -122,7 +122,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      list(this.listQuery).then(response => {
+      listGroup(this.listQuery).then(response => {
         this.list = response.data
         this.total = response.total
         this.listLoading = false

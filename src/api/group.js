@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function list(query) {
+export function listGroup(query) {
   return request({
     url: '/group/list',
     method: 'get',

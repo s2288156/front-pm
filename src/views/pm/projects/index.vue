@@ -59,17 +59,22 @@
       @pagination="fetchData"
     />
 
-    <el-dialog :visible.sync="dialogGroupVisible" :title="actionMap[dialogStatus]">
+    <el-dialog :visible.sync="dialogVisible" :title="actionMap[dialogStatus]">
       <el-form ref="dialogForm" :rules="rules" :model="dialogFormData" label-position="left" label-width="100px">
         <el-form-item v-show="dialogStatus==='update'" label="Id" prop="id">
           <span>{{ dialogFormData.id }}</span>
+        </el-form-item>
+        <el-form-item label="Group" prop="groupId">
+          <el-select v-model="dialogFormData.groupId" placeholder="请选择组">
+            <el-option v-for="(item,index) in groupsData" :key="index" :label="item.name" :value="item.id" />
+          </el-select>
         </el-form-item>
         <el-form-item label="Name" prop="name">
           <el-input v-model="dialogFormData.name" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogGroupVisible = false">
+        <el-button @click="dialogVisible = false">
           {{ actionMap.cancel }}
         </el-button>
         <el-button type="primary" @click="addGroup">
@@ -81,7 +86,8 @@
 </template>
 
 <script>
-import { list, add } from '@/api/projects'
+import { listProjects, add } from '@/api/projects'
+import { listGroup } from '@/api/group'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -106,14 +112,18 @@ export default {
         page: 1,
         limit: 20
       },
-      roles: {
-        name: [{ required: true, message: 'name is required', trigger: 'change' }]
+      rules: {
+        name: [{ required: true, message: 'name is required', trigger: 'change' }],
+        groupId: [{ required: true, message: 'groupId is required', trigger: 'change' }]
       },
-      dialogGroupVisible: false,
+      dialogVisible: false,
       dialogStatus: '',
+      groupsData: [],
       dialogFormData: {
         id: undefined,
-        name: undefined
+        name: undefined,
+        groupId: undefined,
+        description: undefined
       }
     }
   },
@@ -123,7 +133,7 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      list(this.listQuery).then(response => {
+      listProjects(this.listQuery).then(response => {
         this.list = response.data
         this.total = response.total
         this.listLoading = false
@@ -132,13 +142,19 @@ export default {
     resetGroupFormData() {
       this.dialogFormData = {
         id: undefined,
-        name: undefined
+        name: undefined,
+        groupId: undefined,
+        description: undefined
       }
+      this.groupsData = []
     },
     handleAddProject() {
       this.resetGroupFormData()
       this.dialogStatus = 'add'
-      this.dialogGroupVisible = true
+      this.dialogVisible = true
+      listGroup(this.listQuery).then(response => {
+        this.groupsData = response.data
+      })
       this.nextTick()(() => {
         this.$refs['dialogForm'].clearValidate()
       })
@@ -147,7 +163,7 @@ export default {
       this.$refs['dialogForm'].validate((valid) => {
         if (valid) {
           add(this.dialogFormData).then(() => {
-            this.dialogGroupVisible = false
+            this.dialogVisible = false
             this.$notify({
               title: 'Success',
               message: '组添加成功',

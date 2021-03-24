@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function list(query) {
+export function listProjects(query) {
   return request({
     url: '/project/list',
     method: 'get',
