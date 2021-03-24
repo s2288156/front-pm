@@ -138,7 +138,7 @@ export default {
       this.resetGroupFormData()
       this.dialogStatus = 'add'
       this.dialogGroupVisible = true
-      this.nextTick()(() => {
+      this.$nextTick(() => {
         this.$refs['groupForm'].clearValidate()
       })
     },

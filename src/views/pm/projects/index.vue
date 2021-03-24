@@ -77,7 +77,7 @@
         <el-button @click="dialogVisible = false">
           {{ actionMap.cancel }}
         </el-button>
-        <el-button type="primary" @click="addGroup">
+        <el-button type="primary" @click="addProject">
           {{ actionMap.confirm }}
         </el-button>
       </div>
@@ -152,14 +152,14 @@ export default {
       this.resetGroupFormData()
       this.dialogStatus = 'add'
       this.dialogVisible = true
+      this.$nextTick(() => {
+        this.$refs['dialogForm'].clearValidate()
+      })
       listGroup(this.listQuery).then(response => {
         this.groupsData = response.data
       })
-      this.nextTick()(() => {
-        this.$refs['dialogForm'].clearValidate()
-      })
     },
-    addGroup() {
+    addProject() {
       this.$refs['dialogForm'].validate((valid) => {
         if (valid) {
           add(this.dialogFormData).then(() => {
