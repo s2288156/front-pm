@@ -91,10 +91,10 @@ export const constantRoutes = [
         meta: { title: '组列表', icon: 'account' }
       },
       {
-        path: 'group1',
-        name: 'Group1',
-        component: () => import('@/views/sys/roles/index'),
-        meta: { title: '组列表1', icon: 'account' }
+        path: 'projects',
+        name: 'Projects',
+        component: () => import('@/views/pm/projects/index'),
+        meta: { title: '项目列表', icon: 'account' }
       }
     ]
   }
