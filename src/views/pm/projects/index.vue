@@ -166,7 +166,7 @@ export default {
             this.dialogVisible = false
             this.$notify({
               title: 'Success',
-              message: '组添加成功',
+              message: '项目添加成功',
               type: 'success',
               duration: 2000
             })
