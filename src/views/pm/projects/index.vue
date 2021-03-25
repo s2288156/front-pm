@@ -31,7 +31,7 @@
       highlight-current-row
     >
       <el-table-column type="index" :index="1" align="center" label="No." width="95" />
-      <el-table-column prop="groupName" label="项目名称" align="center" />
+      <el-table-column prop="groupName" label="组" align="center" width="300" />
       <el-table-column prop="name" label="项目名称" align="center" />
       <el-table-column align="center" label="创建时间" width="250">
         <template v-slot="scope">
