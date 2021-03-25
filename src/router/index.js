@@ -95,6 +95,12 @@ export const constantRoutes = [
         name: 'Projects',
         component: () => import('@/views/pm/projects/index'),
         meta: { title: '项目列表', icon: 'account' }
+      },
+      {
+        path: 'modules',
+        name: 'Modules',
+        component: () => import('@/views/pm/modules/index'),
+        meta: { title: '模块列表', icon: 'account' }
       }
     ]
   }
