@@ -22,7 +22,7 @@
       highlight-current-row
     >
       <el-table-column type="index" :index="1" align="center" label="No." width="95" />
-      <el-table-column prop="projectName" label="项目名称" align="center" />
+      <el-table-column prop="projectName" label="项目名称" align="center" width="120" />
       <el-table-column prop="name" label="模块名称" align="center" />
       <el-table-column prop="version" label="模块版本号" align="center" />
       <el-table-column align="center" label="创建时间" width="250">
@@ -98,7 +98,6 @@ export default {
         search: '查询',
         add: '新增',
         edit: '编辑',
-        assignUser: '分配用户',
         confirm: '确认',
         cancel: '取消',
         delete: '删除'
