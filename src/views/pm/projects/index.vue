@@ -101,8 +101,7 @@ export default {
       },
       listQuery: {
         page: 1,
-        limit: 20,
-        groupId: undefined
+        limit: 20
       },
       rules: {
         name: [{ required: true, message: 'name is required', trigger: 'change' }],
