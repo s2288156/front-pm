@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-select v-model="listQuery.groupId" placeholder="组" filterable clearable style="width: 120px" class="filter-item">
+      <el-select v-model="listQuery.groupId" placeholder="组" filterable clearable style="width: 120px" class="filter-item" @change="fetchData">
         <el-option v-for="item in groupsData" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
       <el-button class="filter-item" style="margin-left: 10px;" type="success" icon="el-icon-refresh" @click="fetchData">
@@ -171,13 +171,13 @@ export default {
       })
     },
     handleEditRole() {
-      alert('edit role')
+      alert('待开发')
     },
     handleAssignUser() {
-      alert('handle assign user')
+      alert('待开发')
     },
     handleDeleteGroup(row, index) {
-
+      alert('待开发')
     }
   }
 }
