@@ -8,14 +8,6 @@ export function listProjects(query) {
   })
 }
 
-export function listForGroup(query) {
-  return request({
-    url: '/project/list/for_group',
-    method: 'get',
-    params: query
-  })
-}
-
 export function add(data) {
   return request({
     url: '/project/one',

@@ -1,22 +1,13 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-button
-        class="filter-item"
-        style="margin-left: 10px;"
-        type="success"
-        icon="el-icon-refresh"
-        @click="fetchData"
-      >
-        {{ actionMap.reload }}
+      <el-select v-model="listQuery.groupId" placeholder="组" clearable style="width: 120px" class="filter-item">
+        <el-option v-for="item in groupsData" :key="item.id" :label="item.name" :value="item.id" />
+      </el-select>
+      <el-button class="filter-item" style="margin-left: 10px;" type="success" icon="el-icon-refresh" @click="fetchData">
+        {{ actionMap.search }}
       </el-button>
-      <el-button
-        class="filter-item"
-        style="margin-left: 10px;"
-        type="primary"
-        icon="el-icon-edit"
-        @click="handleAddProject"
-      >
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleAddProject">
         {{ actionMap.add }}
       </el-button>
     </div>
@@ -100,7 +91,7 @@ export default {
       total: 0,
       listLoading: true,
       actionMap: {
-        reload: '刷新',
+        search: '查询',
         add: '新增',
         edit: '编辑',
         assignUser: '分配用户',
@@ -110,7 +101,8 @@ export default {
       },
       listQuery: {
         page: 1,
-        limit: 20
+        limit: 20,
+        groupId: undefined
       },
       rules: {
         name: [{ required: true, message: 'name is required', trigger: 'change' }],
@@ -138,6 +130,7 @@ export default {
         this.total = response.total
         this.listLoading = false
       })
+      this.requestGroupData()
     },
     resetGroupFormData() {
       this.dialogFormData = {
@@ -146,7 +139,12 @@ export default {
         groupId: undefined,
         description: undefined
       }
-      this.groupsData = []
+      this.requestGroupData()
+    },
+    requestGroupData() {
+      listGroup(this.listQuery).then(response => {
+        this.groupsData = response.data
+      })
     },
     handleAddProject() {
       this.resetGroupFormData()
@@ -154,9 +152,6 @@ export default {
       this.dialogVisible = true
       this.$nextTick(() => {
         this.$refs['dialogForm'].clearValidate()
-      })
-      listGroup(this.listQuery).then(response => {
-        this.groupsData = response.data
       })
     },
     addProject() {
