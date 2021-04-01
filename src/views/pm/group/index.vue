@@ -105,7 +105,7 @@ export default {
         page: 1,
         limit: 20
       },
-      roles: {
+      rules: {
         name: [{ required: true, message: 'name is required', trigger: 'change' }]
       },
       dialogGroupVisible: false,

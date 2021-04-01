@@ -98,7 +98,8 @@ export default {
       },
       listQuery: {
         page: 1,
-        limit: 20
+        limit: 20,
+        pid: undefined
       },
       rules: {
         name: [{ required: true, message: 'name is required', trigger: 'change' }],
@@ -117,6 +118,7 @@ export default {
     }
   },
   created() {
+    this.listQuery.pid = this.$route.query.pid
     this.fetchData()
   },
   methods: {
