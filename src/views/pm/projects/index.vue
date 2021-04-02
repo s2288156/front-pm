@@ -39,7 +39,7 @@
           <el-button type="primary" size="mini" @click="handleEditRole(row)">
             {{ actionMap.edit }}
           </el-button>
-          <el-button size="mini" type="denger" @click="handleDeleteGroup(row,$index)">
+          <el-button size="mini" type="danger" @click="handleDeleteGroup(row,$index)">
             {{ actionMap.delete }}
           </el-button>
         </template>

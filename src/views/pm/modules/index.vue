@@ -98,7 +98,7 @@ export default {
       },
       listQuery: {
         page: 1,
-        limit: 20,
+        limit: 500,
         pid: undefined
       },
       rules: {
