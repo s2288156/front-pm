@@ -80,14 +80,11 @@ const actions = {
   // users logout
   logout({ commit, state }) {
     return new Promise((resolve, reject) => {
-      logout(state.accessToken).then(() => {
-        removeToken() // must remove  token  first
-        resetRouter()
-        commit('RESET_STATE')
-        resolve()
-      }).catch(error => {
-        reject(error)
-      })
+      removeToken() // must remove  token  first
+      resetRouter()
+      commit('RESET_STATE')
+      resolve()
+      // todo 后期完善登出接口
     })
   },
 
