@@ -8,7 +8,7 @@
         {{ actionMap.search }}
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleAddProject">
-        {{ actionMap.add }}
+        {{ $t('table.add') }}
       </el-button>
     </div>
 
@@ -33,10 +33,10 @@
       <el-table-column align="center" label="操作" width="200">
         <template v-slot="{row,$index}">
           <el-button type="primary" size="mini" @click="handleEditRole(row)">
-            {{ actionMap.edit }}
+            {{ $t('table.edit') }}
           </el-button>
           <el-button size="mini" type="danger" @click="handleDeleteGroup(row,$index)">
-            {{ actionMap.delete }}
+            {{ $t('table.delete') }}
           </el-button>
         </template>
       </el-table-column>
@@ -63,10 +63,10 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">
-          {{ actionMap.cancel }}
+          {{ $t('table.cancel') }}
         </el-button>
         <el-button type="primary" @click="addModule">
-          {{ actionMap.confirm }}
+          {{ $t('table.confirm') }}
         </el-button>
       </div>
     </el-dialog>

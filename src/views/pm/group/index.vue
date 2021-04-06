@@ -8,7 +8,7 @@
         icon="el-icon-refresh"
         @click="fetchData"
       >
-        {{ actionMap.reload }}
+        {{ $t('table.search') }}
       </el-button>
       <el-button
         class="filter-item"
@@ -17,7 +17,7 @@
         icon="el-icon-edit"
         @click="handleAddGroup"
       >
-        {{ actionMap.add }}
+        {{ $t('table.add') }}
       </el-button>
     </div>
 
@@ -41,10 +41,10 @@
       <el-table-column align="center" label="操作" width="200">
         <template v-slot="{row,$index}">
           <el-button type="primary" size="mini" @click="handleEditRole(row)">
-            {{ actionMap.edit }}
+            {{ $t('table.edit') }}
           </el-button>
           <el-button size="mini" type="denger" @click="handleDeleteGroup(row,$index)">
-            {{ actionMap.delete }}
+            {{ $t('table.delete') }}
           </el-button>
         </template>
       </el-table-column>
@@ -58,7 +58,7 @@
       @pagination="fetchData"
     />
 
-    <el-dialog :visible.sync="dialogGroupVisible" :title="actionMap[dialogStatus]">
+    <el-dialog :visible.sync="dialogGroupVisible" :title="textMap[dialogStatus]">
       <el-form ref="groupForm" :rules="rules" :model="groupFormData" label-position="left" label-width="100px">
         <el-form-item v-show="dialogStatus==='update'" label="Id" prop="id">
           <span>{{ groupFormData.id }}</span>
@@ -69,10 +69,10 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogGroupVisible = false">
-          {{ actionMap.cancel }}
+          {{ $t('table.cancel') }}
         </el-button>
         <el-button type="primary" @click="addGroup">
-          {{ actionMap.confirm }}
+          {{ $t('table.confirm') }}
         </el-button>
       </div>
     </el-dialog>
@@ -92,14 +92,9 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
-      actionMap: {
-        reload: '刷新',
-        add: '新增',
-        edit: '编辑',
-        assignUser: '分配用户',
-        confirm: '确认',
-        cancel: '取消',
-        delete: '删除'
+      textMap: {
+        add: 'Add',
+        edit: 'Edit'
       },
       listQuery: {
         page: 1,

@@ -45,7 +45,7 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="fetchData" />
 
-    <el-dialog :visible.sync="dialogVisible" :title="actionMap[dialogStatus]">
+    <el-dialog :visible.sync="dialogVisible" :title="textMap[dialogStatus]">
       <el-form ref="dialogForm" :rules="rules" :model="dialogFormData" label-position="left" label-width="100px">
         <el-form-item v-show="dialogStatus==='update'" label="Id" prop="id">
           <span>{{ dialogFormData.id }}</span>
@@ -88,7 +88,7 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
-      actionMap: {
+      textMap: {
         update: 'Update',
         add: 'Add'
       },

@@ -5,10 +5,10 @@
         <el-option v-for="item in groupsData" :key="item.id" :label="item.name" :value="item.id" />
       </el-select>
       <el-button class="filter-item" style="margin-left: 10px;" type="success" icon="el-icon-refresh" @click="fetchData">
-        {{ actionMap.search }}
+        {{ $t('table.search') }}
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleAddProject">
-        {{ actionMap.add }}
+        {{ $t('table.add') }}
       </el-button>
     </div>
 
@@ -37,10 +37,10 @@
       <el-table-column align="center" label="操作" width="200">
         <template v-slot="{row,$index}">
           <el-button type="primary" size="mini" @click="handleEditRole(row)">
-            {{ actionMap.edit }}
+            {{ $t('table.edit') }}
           </el-button>
           <el-button size="mini" type="danger" @click="handleDeleteGroup(row,$index)">
-            {{ actionMap.delete }}
+            {{ $t('table.delete') }}
           </el-button>
         </template>
       </el-table-column>
@@ -54,7 +54,7 @@
       @pagination="fetchData"
     />
 
-    <el-dialog :visible.sync="dialogVisible" :title="actionMap[dialogStatus]">
+    <el-dialog :visible.sync="dialogVisible" :title="textMap[dialogStatus]">
       <el-form ref="dialogForm" :rules="rules" :model="dialogFormData" label-position="left" label-width="100px">
         <el-form-item v-show="dialogStatus==='update'" label="Id" prop="id">
           <span>{{ dialogFormData.id }}</span>
@@ -70,10 +70,10 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">
-          {{ actionMap.cancel }}
+          {{ $t('table.cancel') }}
         </el-button>
         <el-button type="primary" @click="addProject">
-          {{ actionMap.confirm }}
+          {{ $t('table.confirm') }}
         </el-button>
       </div>
     </el-dialog>
@@ -94,13 +94,9 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
-      actionMap: {
-        search: '查询',
-        add: '新增',
-        edit: '编辑',
-        confirm: '确认',
-        cancel: '取消',
-        delete: '删除'
+      textMap: {
+        add: 'Add',
+        edit: 'Edit'
       },
       listQuery: {
         page: 1,
