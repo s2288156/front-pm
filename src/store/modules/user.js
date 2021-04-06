@@ -55,7 +55,6 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.accessToken).then(response => {
         const { data } = response
-        console.log('getInfo response = ' + data)
         if (!data) {
           reject('Verification failed, please Login again.')
         }
