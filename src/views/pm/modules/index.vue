@@ -89,8 +89,8 @@ export default {
       total: 0,
       listLoading: true,
       textMap: {
-        update: 'Update',
-        add: 'Add'
+        add: this.$t('table.add'),
+        edit: this.$t('table.edit')
       },
       listQuery: {
         page: 1,

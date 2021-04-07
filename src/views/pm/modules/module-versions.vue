@@ -1,11 +1,8 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-select v-model="listQuery.pid" placeholder="项目" filterable clearable style="width: 120px" class="filter-item" @change="fetchData">
-        <el-option v-for="item in projectsData" :key="item.id" :label="item.name" :value="item.id" />
-      </el-select>
       <el-button class="filter-item" style="margin-left: 10px;" type="success" icon="el-icon-refresh" @click="fetchData">
-        {{ actionMap.search }}
+        {{ $t('table.refresh') }}
       </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleAddProject">
         {{ $t('table.add') }}
@@ -22,8 +19,8 @@
       highlight-current-row
     >
       <el-table-column type="index" :index="1" align="center" label="No." width="95" />
-      <el-table-column prop="name" label="模块名称" align="center" />
       <el-table-column prop="version" label="版本号" align="center" />
+      <el-table-column prop="description" label="描述" align="center" />
       <el-table-column align="center" label="创建时间" width="250">
         <template v-slot="scope">
           <i class="el-icon-time" />
@@ -88,12 +85,8 @@ export default {
       total: 0,
       listLoading: true,
       actionMap: {
-        search: '查询',
-        add: '新增',
-        edit: '编辑',
-        confirm: '确认',
-        cancel: '取消',
-        delete: '删除'
+        add: this.$t('table.add'),
+        edit: this.$t('table.edit')
       },
       listQuery: {
         page: 1,
