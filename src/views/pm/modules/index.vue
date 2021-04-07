@@ -33,8 +33,8 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="200">
         <template v-slot="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleEditRole(row)">
-            {{ $t('table.edit') }}
+          <el-button type="primary" size="mini" @click="handleSkipVersionList(row)">
+            {{ $t('table.versionList') }}
           </el-button>
           <el-button size="mini" type="danger" @click="handleDeleteGroup(row,$index)">
             {{ $t('table.delete') }}
@@ -125,7 +125,6 @@ export default {
         this.total = response.total
         this.listLoading = false
       })
-      this.requestProjectsData()
     },
     requestProjectsData() {
       listProjects(this.listQuery).then(response => {
@@ -165,8 +164,8 @@ export default {
         }
       })
     },
-    handleEditRole() {
-      alert('edit role')
+    handleSkipVersionList(row) {
+      this.$router.push({ path: '/pm/module-versions', params: { name: row.name }})
     },
     handleAssignUser() {
       alert('handle assign user')
