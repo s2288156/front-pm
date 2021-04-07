@@ -104,8 +104,8 @@ export const constantRoutes = [
       },
       {
         path: 'module-versions',
-        name: 'ModuleVersions',
-        component: () => import('@/views/pm/module/module-versions'),
+        name: 'Versions',
+        component: () => import('@/views/pm/module/versions'),
         meta: { title: '模块版本列表', icon: 'account' },
         hidden: true
       }

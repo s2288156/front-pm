@@ -9,15 +9,7 @@
       </el-button>
     </div>
 
-    <el-table
-      :key="tableKey"
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-    >
+    <el-table :key="tableKey" v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column type="index" :index="1" align="center" label="No." width="95" />
       <el-table-column prop="version" label="版本号" align="center" />
       <el-table-column prop="description" label="描述" align="center" />
@@ -71,12 +63,11 @@
 </template>
 
 <script>
-import { listProjects } from '@/api/projects'
 import { listModules, addModule } from '@/api/module'
 import Pagination from '@/components/Pagination'
 
 export default {
-  name: 'Modules',
+  name: 'ModuleVersions',
   components: { Pagination },
   data() {
     return {
@@ -100,7 +91,6 @@ export default {
       },
       dialogVisible: false,
       dialogStatus: '',
-      projectsData: [],
       dialogFormData: {
         id: undefined,
         pid: undefined,
@@ -121,12 +111,6 @@ export default {
         this.total = response.total
         this.listLoading = false
       })
-      this.requestProjectsData()
-    },
-    requestProjectsData() {
-      listProjects(this.listQuery).then(response => {
-        this.projectsData = response.data
-      })
     },
     resetDialogFormData() {
       this.dialogFormData = {
@@ -135,7 +119,6 @@ export default {
         name: undefined,
         version: undefined
       }
-      this.requestProjectsData()
     },
     handleAddProject() {
       this.resetDialogFormData()

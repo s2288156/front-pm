@@ -80,7 +80,7 @@ import { listModules, addModule } from '@/api/module'
 import Pagination from '@/components/Pagination'
 
 export default {
-  name: 'Modules',
+  name: 'Module',
   components: { Pagination },
   data() {
     return {
