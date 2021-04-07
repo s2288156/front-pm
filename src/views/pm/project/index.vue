@@ -178,7 +178,7 @@ export default {
       alert('待开发')
     },
     skipToModules(pid) {
-      this.$router.push({ path: '/pm/modules', query: { pid: pid }})
+      this.$router.push({ path: '/pm/module', query: { pid: pid }})
     }
   }
 }

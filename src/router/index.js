@@ -91,21 +91,21 @@ export const constantRoutes = [
         meta: { title: '组列表', icon: 'account' }
       },
       {
-        path: 'projects',
-        name: 'Projects',
-        component: () => import('@/views/pm/projects/index'),
+        path: 'project',
+        name: 'Project',
+        component: () => import('@/views/pm/project/index'),
         meta: { title: '项目列表', icon: 'account' }
       },
       {
-        path: 'modules',
-        name: 'Modules',
-        component: () => import('@/views/pm/modules/index'),
+        path: 'module',
+        name: 'Module',
+        component: () => import('@/views/pm/module/index'),
         meta: { title: '模块列表', icon: 'account' }
       },
       {
         path: 'module-versions',
         name: 'ModuleVersions',
-        component: () => import('@/views/pm/modules/module-versions'),
+        component: () => import('@/views/pm/module/module-versions'),
         meta: { title: '模块版本列表', icon: 'account' },
         hidden: true
       }
