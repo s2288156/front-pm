@@ -61,6 +61,7 @@ export const constantRoutes = [
     redirect: '/sys/users',
     name: '系统管理',
     meta: { title: '系统管理', icon: 'example' },
+    hidden: true,
     children: [
       {
         path: 'users',
@@ -123,6 +124,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/nested/menu1',
     name: 'Nested',
+    hidden: true,
     meta: {
       title: 'Nested',
       icon: 'nested'
@@ -179,6 +181,7 @@ export const asyncRoutes = [
   {
     path: 'external-link',
     component: Layout,
+    hidden: true,
     children: [
       {
         path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
