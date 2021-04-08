@@ -15,3 +15,19 @@ export function addModule(data) {
     data
   })
 }
+
+export function listModuleVersions(query) {
+  return request({
+    url: '/module/version/list',
+    method: 'get',
+    params: query
+  })
+}
+
+export function addVersion(data) {
+  return request({
+    url: '/module/version',
+    method: 'post',
+    data
+  })
+}

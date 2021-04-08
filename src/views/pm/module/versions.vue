@@ -33,37 +33,11 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="fetchData" />
 
-    <el-dialog :visible.sync="dialogVisible" :title="actionMap[dialogStatus]">
-      <el-form ref="dialogForm" :rules="rules" :model="dialogFormData" label-position="left" label-width="100px">
-        <el-form-item v-show="dialogStatus==='update'" label="Id" prop="id">
-          <span>{{ dialogFormData.id }}</span>
-        </el-form-item>
-        <el-form-item label="Project" prop="pid">
-          <el-select v-model="dialogFormData.pid" placeholder="请选择关联项目">
-            <el-option v-for="(item,index) in projectsData" :key="index" :label="item.name" :value="item.id" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="Name" prop="name">
-          <el-input v-model="dialogFormData.name" />
-        </el-form-item>
-        <el-form-item label="Version" prop="version">
-          <el-input v-model="dialogFormData.version" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">
-          {{ $t('table.cancel') }}
-        </el-button>
-        <el-button type="primary" @click="addModule">
-          {{ $t('table.confirm') }}
-        </el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import { listModules, addModule } from '@/api/module'
+import { listModuleVersions, addVersion } from '@/api/module'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -82,31 +56,29 @@ export default {
       listQuery: {
         page: 1,
         limit: 500,
-        pid: undefined
+        mid: undefined
       },
       rules: {
-        name: [{ required: true, message: 'name is required', trigger: 'change' }],
-        pid: [{ required: true, message: 'pid is required', trigger: 'change' }],
+        mid: [{ required: true, message: 'mid is required', trigger: 'change' }],
         version: [{ required: true, message: 'version is required', trigger: 'change' }]
       },
       dialogVisible: false,
       dialogStatus: '',
       dialogFormData: {
-        id: undefined,
-        pid: undefined,
-        name: undefined,
-        version: undefined
+        mid: undefined,
+        version: undefined,
+        description: undefined
       }
     }
   },
   created() {
-    this.listQuery.pid = this.$route.query.pid
+    this.listQuery.mid = this.$route.query.mid
     this.fetchData()
   },
   methods: {
     fetchData() {
       this.listLoading = true
-      listModules(this.listQuery).then(response => {
+      listModuleVersions(this.listQuery).then(response => {
         this.list = response.data
         this.total = response.total
         this.listLoading = false
@@ -114,10 +86,9 @@ export default {
     },
     resetDialogFormData() {
       this.dialogFormData = {
-        id: undefined,
-        pid: undefined,
-        name: undefined,
-        version: undefined
+        mid: undefined,
+        version: undefined,
+        description: undefined
       }
     },
     handleAddProject() {
@@ -131,11 +102,11 @@ export default {
     addModule() {
       this.$refs['dialogForm'].validate((valid) => {
         if (valid) {
-          addModule(this.dialogFormData).then(() => {
+          addVersion(this.dialogFormData).then(() => {
             this.dialogVisible = false
             this.$notify({
               title: 'Success',
-              message: '模块添加成功',
+              message: '版本添加成功',
               type: 'success',
               duration: 2000
             })
