@@ -25,6 +25,7 @@
       <el-table-column prop="projectName" label="项目名称" align="center" width="120" />
       <el-table-column prop="name" label="模块名称" align="center" />
       <el-table-column prop="latestVersion" label="最新模块版本号" align="center" />
+      <el-table-column prop="description" label="描述" align="center" />
       <el-table-column align="center" label="创建时间" width="250">
         <template v-slot="scope">
           <i class="el-icon-time" />
@@ -60,6 +61,9 @@
         </el-form-item>
         <el-form-item label="Version" prop="version">
           <el-input v-model="dialogFormData.version" />
+        </el-form-item>
+        <el-form-item label="Description" prop="description">
+          <el-input v-model="dialogFormData.description" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -109,7 +113,8 @@ export default {
         id: undefined,
         pid: undefined,
         name: undefined,
-        version: undefined
+        version: undefined,
+        description: undefined
       }
     }
   },
@@ -136,7 +141,8 @@ export default {
         id: undefined,
         pid: undefined,
         name: undefined,
-        version: undefined
+        version: undefined,
+        description: undefined
       }
       this.requestProjectsData()
     },
