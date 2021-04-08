@@ -109,6 +109,7 @@ export default {
     imageUploadTips: '由于我在使用时它只有vue@1版本，而且和mockjs不兼容，所以自己改造了一下，如果大家要使用的话，优先还是使用官方版本。'
   },
   table: {
+    dependModuleList: '依赖模块列表',
     versionList: '版本列表',
     refresh: '刷新',
     dynamicTips1: '固定表头, 按照表头顺序排序',

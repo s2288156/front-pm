@@ -73,7 +73,7 @@ export default {
       },
       listQuery: {
         page: 1,
-        limit: 500,
+        limit: 10,
         sort: '+version',
         mid: undefined
       },

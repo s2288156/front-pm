@@ -36,8 +36,8 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="200">
         <template v-slot="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleEditRole(row)">
-            {{ $t('table.edit') }}
+          <el-button type="primary" size="mini" @click="toDependList(row)">
+            {{ $t('table.dependModuleList') }}
           </el-button>
           <el-button size="mini" type="danger" @click="handleDeleteGroup(row,$index)">
             {{ $t('table.delete') }}
@@ -168,10 +168,7 @@ export default {
         }
       })
     },
-    handleEditRole() {
-      alert('待开发')
-    },
-    handleAssignUser() {
+    toDependList() {
       alert('待开发')
     },
     handleDeleteGroup(row, index) {
