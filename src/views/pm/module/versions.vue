@@ -33,6 +33,24 @@
 
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="fetchData" />
 
+    <el-dialog :visible.sync="dialogVisible" :title="textMap[dialogStatus]">
+      <el-form ref="dialogForm" :rules="rules" :model="dialogFormData" label-position="left" label-width="100px">
+        <el-form-item label="版本" prop="version">
+          <el-input v-model="dialogFormData.version" />
+        </el-form-item>
+        <el-form-item label="描述" prop="description">
+          <el-input v-model="dialogFormData.description" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">
+          {{ $t('table.cancel') }}
+        </el-button>
+        <el-button type="primary" @click="addModule">
+          {{ $t('table.confirm') }}
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -49,13 +67,14 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
-      actionMap: {
+      textMap: {
         add: this.$t('table.add'),
         edit: this.$t('table.edit')
       },
       listQuery: {
         page: 1,
         limit: 500,
+        sort: '+version',
         mid: undefined
       },
       rules: {
@@ -86,7 +105,7 @@ export default {
     },
     resetDialogFormData() {
       this.dialogFormData = {
-        mid: undefined,
+        mid: this.listQuery.mid,
         version: undefined,
         description: undefined
       }
