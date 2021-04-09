@@ -15,3 +15,19 @@ export function add(data) {
     data
   })
 }
+
+export function dependAdd(data) {
+  return request({
+    url: '/project/depend',
+    method: 'post',
+    data
+  })
+}
+
+export function listDepend(query) {
+  return request({
+    url: '/project/depend/list',
+    method: 'get',
+    params: query
+  })
+}

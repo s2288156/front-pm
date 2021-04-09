@@ -165,8 +165,8 @@ export default {
         }
       })
     },
-    toDependList() {
-      alert('待开发')
+    toDependList(row) {
+      this.$router.push({ path: '/pm/depend-list', query: { pid: row.id }})
     },
     skipToModules(pid) {
       this.$router.push({ path: '/pm/module', query: { pid: pid }})

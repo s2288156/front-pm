@@ -54,7 +54,7 @@
         <el-button @click="dialogVisible = false">
           {{ $t('table.cancel') }}
         </el-button>
-        <el-button type="primary" @click="addProject">
+        <el-button type="primary" @click="addDepend">
           {{ $t('table.confirm') }}
         </el-button>
       </div>
@@ -63,8 +63,7 @@
 </template>
 
 <script>
-import { listProjects, add } from '@/api/projects'
-import { listGroup } from '@/api/group'
+import { dependAdd, listDepend } from '@/api/projects'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -82,11 +81,13 @@ export default {
       },
       listQuery: {
         page: 1,
-        limit: 20
+        limit: 20,
+        pid: undefined
       },
       rules: {
-        name: [{ required: true, message: 'name is required', trigger: 'change' }],
-        groupId: [{ required: true, message: 'groupId is required', trigger: 'change' }]
+        pid: [{ required: true, message: 'pid is required', trigger: 'change' }],
+        dependMid: [{ required: true, message: 'dependMid is required', trigger: 'change' }],
+        version: [{ required: true, message: 'version is required', trigger: 'change' }]
       },
       dialogVisible: false,
       dialogStatus: '',
@@ -100,31 +101,25 @@ export default {
     }
   },
   created() {
+    this.listQuery.pid = this.$route.query.pid
     this.fetchData()
   },
   methods: {
     fetchData() {
       this.listLoading = true
-      listProjects(this.listQuery).then(response => {
+      listDepend(this.listQuery).then(response => {
         this.list = response.data
         this.total = response.total
         this.listLoading = false
       })
-      this.requestGroupData()
     },
     resetProjectFormData() {
       this.dialogFormData = {
-        id: undefined,
-        name: undefined,
-        groupId: undefined,
+        pid: undefined,
+        dependMid: undefined,
+        version: undefined,
         description: undefined
       }
-      this.requestGroupData()
-    },
-    requestGroupData() {
-      listGroup(this.listQuery).then(response => {
-        this.groupsData = response.data
-      })
     },
     handleAddProject() {
       this.resetProjectFormData()
@@ -134,10 +129,10 @@ export default {
         this.$refs['dialogForm'].clearValidate()
       })
     },
-    addProject() {
+    addDepend() {
       this.$refs['dialogForm'].validate((valid) => {
         if (valid) {
-          add(this.dialogFormData).then(() => {
+          dependAdd(this.dialogFormData).then(() => {
             this.dialogVisible = false
             this.$notify({
               title: 'Success',
