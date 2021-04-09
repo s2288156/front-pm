@@ -18,14 +18,8 @@
       <el-table-column type="index" :index="1" align="center" label="No." width="95" />
       <el-table-column prop="projectName" label="项目名称" align="center" width="300" />
       <el-table-column prop="moduleName" label="模块名称" align="center" width="300" />
-      <el-table-column prop="version" label="版本" align="center" width="300" />
-      <el-table-column prop="description" label="描述" align="center" width="300" />
-      <el-table-column align="center" label="创建时间" width="250">
-        <template v-slot="scope">
-          <i class="el-icon-time" />
-          <span>{{ scope.row.createTime }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column prop="moduleVersion" label="版本" align="center" width="300" />
+      <el-table-column prop="description" label="描述" align="center" />
     </el-table>
 
     <pagination
@@ -38,16 +32,22 @@
 
     <el-dialog :visible.sync="dialogVisible" :title="textMap[dialogStatus]">
       <el-form ref="dialogForm" :rules="rules" :model="dialogFormData" label-position="left" label-width="100px">
-        <el-form-item v-show="dialogStatus==='update'" label="Id" prop="id">
-          <span>{{ dialogFormData.id }}</span>
+        <el-form-item label="Pid" prop="pid">
+          <span>{{ dialogFormData.pid }}</span>
         </el-form-item>
-        <el-form-item label="Group" prop="groupId">
-          <el-select v-model="dialogFormData.groupId" placeholder="请选择组">
-            <el-option v-for="(item,index) in groupsData" :key="index" :label="item.name" :value="item.id" />
+        <el-form-item label="Module" prop="id">
+          <el-select v-model="dialogFormData.dependMid" placeholder="请选择组" @change="selectModule">
+            <el-option v-for="(item,index) in moduleList" :key="index" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
-        <el-form-item label="Name" prop="name">
-          <el-input v-model="dialogFormData.name" />
+
+        <el-form-item label="Version" prop="version">
+          <el-select v-model="dialogFormData.version" placeholder="请选择版本">
+            <el-option v-for="(item,index) in versionList" :key="index" :label="item.version" :value="item.version" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Description" prop="description">
+          <el-input v-model="dialogFormData.description" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -64,6 +64,7 @@
 
 <script>
 import { dependAdd, listDepend } from '@/api/projects'
+import { listModules, listModuleVersions } from '@/api/module'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -91,11 +92,12 @@ export default {
       },
       dialogVisible: false,
       dialogStatus: '',
-      groupsData: [],
+      moduleList: [],
+      versionList: [],
       dialogFormData: {
-        id: undefined,
-        name: undefined,
-        groupId: undefined,
+        pid: undefined,
+        dependMid: undefined,
+        version: undefined,
         description: undefined
       }
     }
@@ -113,9 +115,19 @@ export default {
         this.listLoading = false
       })
     },
+    requestModuleData() {
+      listModules({ page: 1, limit: 500 }).then(response => {
+        this.moduleList = response.data
+      })
+    },
+    selectModule() {
+      listModuleVersions({ page: 1, limit: 500, mid: this.dialogFormData.dependMid }).then(response => {
+        this.versionList = response.data
+      })
+    },
     resetProjectFormData() {
       this.dialogFormData = {
-        pid: undefined,
+        pid: this.$route.query.pid,
         dependMid: undefined,
         version: undefined,
         description: undefined
@@ -123,6 +135,7 @@ export default {
     },
     handleAddProject() {
       this.resetProjectFormData()
+      this.requestModuleData()
       this.dialogStatus = 'add'
       this.dialogVisible = true
       this.$nextTick(() => {
@@ -136,7 +149,7 @@ export default {
             this.dialogVisible = false
             this.$notify({
               title: 'Success',
-              message: '项目添加成功',
+              message: '项目依赖添加成功',
               type: 'success',
               duration: 2000
             })
@@ -144,12 +157,6 @@ export default {
           })
         }
       })
-    },
-    toDependList() {
-      alert('待开发')
-    },
-    skipToModules(pid) {
-      this.$router.push({ path: '/pm/module', query: { pid: pid }})
     }
   }
 }
