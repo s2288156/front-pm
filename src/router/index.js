@@ -98,6 +98,13 @@ export const constantRoutes = [
         meta: { title: '项目列表', icon: 'account' }
       },
       {
+        path: 'depend-list',
+        name: 'DependList',
+        component: () => import('@/views/pm/project/depend-list'),
+        meta: { title: '项目依赖列表', icon: 'account' },
+        hidden: true
+      },
+      {
         path: 'module',
         name: 'Module',
         component: () => import('@/views/pm/module/index'),

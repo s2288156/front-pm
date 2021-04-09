@@ -1,12 +1,6 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-      <el-select v-model="listQuery.groupId" placeholder="组" filterable clearable style="width: 120px" class="filter-item" @change="requestGroupData">
-        <el-option v-for="item in groupsData" :key="item.id" :label="item.name" :value="item.id" />
-      </el-select>
-      <el-button class="filter-item" style="margin-left: 10px;" type="success" icon="el-icon-refresh" @click="fetchData">
-        {{ $t('table.search') }}
-      </el-button>
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleAddProject">
         {{ $t('table.add') }}
       </el-button>
@@ -21,24 +15,15 @@
       fit
       highlight-current-row
     >
-      <el-table-column type="index" :index="1" align="center" label="No." width="115" />
-      <el-table-column prop="groupName" label="组" align="center" width="200" />
-      <el-table-column label="项目名称" align="center">
-        <template v-slot="{row}">
-          <span class="link-type" @click="skipToModules(row.id)">{{ row.name }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="创建时间" width="450">
+      <el-table-column type="index" :index="1" align="center" label="No." width="95" />
+      <el-table-column prop="projectName" label="项目名称" align="center" width="300" />
+      <el-table-column prop="moduleName" label="模块名称" align="center" width="300" />
+      <el-table-column prop="version" label="版本" align="center" width="300" />
+      <el-table-column prop="description" label="描述" align="center" width="300" />
+      <el-table-column align="center" label="创建时间" width="250">
         <template v-slot="scope">
           <i class="el-icon-time" />
           <span>{{ scope.row.createTime }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="操作" width="300">
-        <template v-slot="{row}">
-          <el-button type="primary" size="mini" @click="toDependList(row)">
-            {{ $t('table.dependModuleList') }}
-          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -83,7 +68,7 @@ import { listGroup } from '@/api/group'
 import Pagination from '@/components/Pagination'
 
 export default {
-  name: 'Projects',
+  name: 'ProjectDependList',
   components: { Pagination },
   data() {
     return {
