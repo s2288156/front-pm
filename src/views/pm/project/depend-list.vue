@@ -32,11 +32,11 @@
 
     <el-dialog :visible.sync="dialogVisible" :title="textMap[dialogStatus]">
       <el-form ref="dialogForm" :rules="rules" :model="dialogFormData" label-position="left" label-width="100px">
-        <el-form-item label="Pid" prop="pid">
+        <el-form-item v-show="false" label="Pid" prop="pid">
           <span>{{ dialogFormData.pid }}</span>
         </el-form-item>
-        <el-form-item label="Module" prop="id">
-          <el-select v-model="dialogFormData.dependMid" placeholder="请选择组" @change="selectModule">
+        <el-form-item label="Module" prop="dependMid">
+          <el-select v-model="dialogFormData.dependMid" placeholder="请选择模块" @change="selectModule">
             <el-option v-for="(item,index) in moduleList" :key="index" :label="item.name" :value="item.id" />
           </el-select>
         </el-form-item>
@@ -121,6 +121,7 @@ export default {
       })
     },
     selectModule() {
+      this.dialogFormData.version = undefined
       listModuleVersions({ page: 1, limit: 500, mid: this.dialogFormData.dependMid }).then(response => {
         this.versionList = response.data
       })
