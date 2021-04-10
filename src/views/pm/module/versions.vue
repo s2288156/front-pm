@@ -4,7 +4,7 @@
       <el-button class="filter-item" style="margin-left: 10px;" type="success" icon="el-icon-refresh" @click="fetchData">
         {{ $t('table.refresh') }}
       </el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleAddProject">
+      <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleAddVersion">
         {{ $t('table.add') }}
       </el-button>
     </div>
@@ -21,7 +21,7 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="200">
         <template v-slot="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleEditRole(row)">
+          <el-button type="primary" size="mini" @click="handleEditVersion(row)">
             {{ $t('table.edit') }}
           </el-button>
           <el-button size="mini" type="danger" @click="handleDeleteGroup(row,$index)">
@@ -35,18 +35,18 @@
 
     <el-dialog :visible.sync="dialogVisible" :title="textMap[dialogStatus]">
       <el-form ref="dialogForm" :rules="rules" :model="dialogFormData" label-position="left" label-width="100px">
-        <el-form-item label="版本" prop="version">
+        <el-form-item v-show="dialogStatus === 'add'" label="版本" prop="version">
           <el-input v-model="dialogFormData.version" />
         </el-form-item>
         <el-form-item label="描述" prop="description">
-          <el-input v-model="dialogFormData.description" />
+          <el-input v-model="dialogFormData.description" type="textarea" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">
           {{ $t('table.cancel') }}
         </el-button>
-        <el-button type="primary" @click="addModule">
+        <el-button type="primary" @click="dialogStatus === 'add ' ? addVersion() : editVersion()">
           {{ $t('table.confirm') }}
         </el-button>
       </div>
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { listModuleVersions, addVersion } from '@/api/module'
+import { listModuleVersions, addVersion, updateVersion } from '@/api/module'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -84,6 +84,7 @@ export default {
       dialogVisible: false,
       dialogStatus: '',
       dialogFormData: {
+        id: undefined,
         mid: undefined,
         version: undefined,
         description: undefined
@@ -110,7 +111,7 @@ export default {
         description: undefined
       }
     },
-    handleAddProject() {
+    handleAddVersion() {
       this.resetDialogFormData()
       this.dialogStatus = 'add'
       this.dialogVisible = true
@@ -118,7 +119,7 @@ export default {
         this.$refs['dialogForm'].clearValidate()
       })
     },
-    addModule() {
+    addVersion() {
       this.$refs['dialogForm'].validate((valid) => {
         if (valid) {
           addVersion(this.dialogFormData).then(() => {
@@ -134,14 +135,24 @@ export default {
         }
       })
     },
-    handleEditRole() {
-      alert('edit role')
+    handleEditVersion(row) {
+      this.resetDialogFormData()
+      this.dialogStatus = 'update'
+      this.dialogFormData.id = row.id
+      this.dialogFormData.description = row.description
+      this.dialogVisible = true
     },
-    handleAssignUser() {
-      alert('handle assign user')
-    },
-    handleDeleteGroup(row, index) {
-
+    editVersion() {
+      updateVersion(this.dialogFormData).then(() => {
+        this.dialogVisible = false
+        this.$notify({
+          title: 'Success',
+          message: '版本更新成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.fetchData()
+      })
     }
   }
 }

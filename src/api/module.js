@@ -31,3 +31,11 @@ export function addVersion(data) {
     data
   })
 }
+
+export function updateVersion(data) {
+  return request({
+    url: '/module/version',
+    method: 'put',
+    data
+  })
+}
