@@ -157,3 +157,8 @@ export default {
   }
 }
 </script>
+<style>
+.el-table .cell {
+  white-space: pre-line;
+}
+</style>
