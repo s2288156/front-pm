@@ -19,6 +19,13 @@
       <el-table-column prop="projectName" label="项目名称" align="center" width="300" />
       <el-table-column prop="moduleName" label="模块名称" align="center" width="500" />
       <el-table-column prop="moduleVersion" label="版本" align="center" />
+      <el-table-column label="操作" align="center">
+        <template v-slot="{row}">
+          <el-button type="danger" size="mini" @click="deleteDependConfirm(row.id)">
+            {{ $t('table.delete') }}
+          </el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <pagination
@@ -59,7 +66,7 @@
 </template>
 
 <script>
-import { dependAdd, listDepend } from '@/api/projects'
+import { dependAdd, listDepend, deleteDepend } from '@/api/projects'
 import { listModules, listModuleVersions } from '@/api/module'
 import Pagination from '@/components/Pagination'
 
@@ -151,6 +158,36 @@ export default {
             this.fetchData()
           })
         }
+      })
+    },
+    deleteDependConfirm(id) {
+      this.$confirm('确认要删除此依赖吗？', '警告', {
+        confirmButtonText: this.$t('table.confirm'),
+        cancelButtonText: this.$t('table.cancel')
+      }).then(() => {
+        deleteDepend(id).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+          this.fetchData()
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
+    deleteDependHandle(id) {
+      deleteDepend(id).then(() => {
+        this.$notify({
+          title: 'Success',
+          message: '项目依赖删除成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.fetchData()
       })
     }
   }

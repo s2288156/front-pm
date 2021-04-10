@@ -31,3 +31,10 @@ export function listDepend(query) {
     params: query
   })
 }
+
+export function deleteDepend(id) {
+  return request({
+    url: '/project/depend/' + id,
+    method: 'delete'
+  })
+}
