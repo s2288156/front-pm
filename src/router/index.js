@@ -89,26 +89,26 @@ export const constantRoutes = [
         path: 'group',
         name: 'Group',
         component: () => import('@/views/pm/group/index'),
-        meta: { title: '组列表', icon: 'account' }
+        meta: { title: '组列表', icon: 'el-icon-food' }
       },
       {
         path: 'project',
         name: 'Project',
         component: () => import('@/views/pm/project/index'),
-        meta: { title: '项目列表', icon: 'account' }
+        meta: { title: '项目列表', icon: 'el-icon-chicken' }
       },
       {
         path: 'depend-list',
         name: 'DependList',
         component: () => import('@/views/pm/project/depend-list'),
-        meta: { title: '项目依赖列表', icon: 'account' },
+        meta: { title: '项目依赖列表', icon: 'el-icon-sunny' },
         hidden: true
       },
       {
         path: 'module',
         name: 'Module',
         component: () => import('@/views/pm/module/index'),
-        meta: { title: '模块列表', icon: 'account' }
+        meta: { title: '模块列表', icon: 'el-icon-tableware' }
       },
       {
         path: 'module-versions',

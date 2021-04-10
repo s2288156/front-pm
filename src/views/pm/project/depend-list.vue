@@ -17,8 +17,8 @@
     >
       <el-table-column type="index" :index="1" align="center" label="No." width="95" />
       <el-table-column prop="projectName" label="项目名称" align="center" width="300" />
-      <el-table-column prop="moduleName" label="模块名称" align="center" width="300" />
-      <el-table-column prop="moduleVersion" label="版本" align="center" width="300" />
+      <el-table-column prop="moduleName" label="模块名称" align="center" width="500" />
+      <el-table-column prop="moduleVersion" label="版本" align="center" />
     </el-table>
 
     <pagination
