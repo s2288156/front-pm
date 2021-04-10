@@ -178,17 +178,6 @@ export default {
           message: '已取消删除'
         })
       })
-    },
-    deleteDependHandle(id) {
-      deleteDepend(id).then(() => {
-        this.$notify({
-          title: 'Success',
-          message: '项目依赖删除成功',
-          type: 'success',
-          duration: 2000
-        })
-        this.fetchData()
-      })
     }
   }
 }
