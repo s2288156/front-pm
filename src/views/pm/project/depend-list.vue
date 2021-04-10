@@ -19,7 +19,6 @@
       <el-table-column prop="projectName" label="项目名称" align="center" width="300" />
       <el-table-column prop="moduleName" label="模块名称" align="center" width="300" />
       <el-table-column prop="moduleVersion" label="版本" align="center" width="300" />
-      <el-table-column prop="description" label="描述" align="center" />
     </el-table>
 
     <pagination
@@ -45,9 +44,6 @@
           <el-select v-model="dialogFormData.version" placeholder="请选择版本">
             <el-option v-for="(item,index) in versionList" :key="index" :label="item.version" :value="item.version" />
           </el-select>
-        </el-form-item>
-        <el-form-item label="Description" prop="description">
-          <el-input v-model="dialogFormData.description" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -97,8 +93,7 @@ export default {
       dialogFormData: {
         pid: undefined,
         dependMid: undefined,
-        version: undefined,
-        description: undefined
+        version: undefined
       }
     }
   },
@@ -130,8 +125,7 @@ export default {
       this.dialogFormData = {
         pid: this.$route.query.pid,
         dependMid: undefined,
-        version: undefined,
-        description: undefined
+        version: undefined
       }
     },
     handleAddProject() {
