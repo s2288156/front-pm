@@ -83,7 +83,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/pm/group',
     name: '项目管理',
-    meta: { title: '项目管理', icon: 'example' },
+    meta: { title: '项目管理', icon: 'el-icon-dish' },
     children: [
       {
         path: 'group',
