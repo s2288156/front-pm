@@ -43,7 +43,7 @@
           <el-button type="primary" size="mini" @click="handleEditRole(row)">
             {{ $t('table.edit') }}
           </el-button>
-          <el-button size="mini" type="denger" @click="handleDeleteGroup(row,$index)">
+          <el-button size="mini" type="danger" @click="handleDeleteGroup(row,$index)">
             {{ $t('table.delete') }}
           </el-button>
         </template>
