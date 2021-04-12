@@ -154,21 +154,22 @@ export default {
       })
     },
     handleEditRole() {
-      alert('edit role')
+      alert('待开发')
     },
     handleAssignUser() {
-      alert('handle assign user')
+      alert('待开发')
     },
     handleDeleteGroup(row, index) {
-      deleteGroup(row.id).then(() => {
-        this.$notify({
-          title: 'Success',
-          message: '组删除成功',
-          type: 'success',
-          duration: 2000
-        })
-        this.list.splice(index, 1)
-      })
+      alert('待开发')
+      // deleteGroup(row.id).then(() => {
+      //   this.$notify({
+      //     title: 'Success',
+      //     message: '组删除成功',
+      //     type: 'success',
+      //     duration: 2000
+      //   })
+      //   this.list.splice(index, 1)
+      // })
     }
   }
 }

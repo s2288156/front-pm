@@ -174,10 +174,10 @@ export default {
       this.$router.push({ path: '/pm/module-versions', query: { mid: row.id, name: row.name }})
     },
     handleAssignUser() {
-      alert('handle assign user')
+      alert('待开发')
     },
     handleDeleteGroup(row, index) {
-
+      alert('待开发')
     }
   }
 }
