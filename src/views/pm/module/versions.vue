@@ -24,7 +24,7 @@
           <el-button type="primary" size="mini" @click="handleEditVersion(row)">
             {{ $t('table.edit') }}
           </el-button>
-          <el-button size="mini" type="danger" @click="handleDeleteGroup(row,$index)">
+          <el-button size="mini" type="danger" @click="handleDeleteGroup(row)">
             {{ $t('table.delete') }}
           </el-button>
         </template>
@@ -153,6 +153,9 @@ export default {
         })
         this.fetchData()
       })
+    },
+    handleDeleteGroup(row) {
+      alert('待开发')
     }
   }
 }
