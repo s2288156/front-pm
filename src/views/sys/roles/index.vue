@@ -85,6 +85,9 @@ export default {
       }
     }
   },
+  created() {
+    this.fetchData()
+  },
   methods: {
     fetchData() {
       console.log('fetch data')
@@ -102,9 +105,6 @@ export default {
     handleAssignUser() {
       alert('handle assign user')
     }
-  },
-  created() {
-    this.fetchData()
   }
 }
 </script>

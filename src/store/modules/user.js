@@ -1,4 +1,4 @@
-import { login, logout, getInfo } from '@/api/user'
+import { login, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
@@ -83,7 +83,7 @@ const actions = {
       resetRouter()
       commit('RESET_STATE')
       resolve()
-      // todo 后期完善登出接口
+      // todo 后期完善登出接口,调用logout()接口
     })
   },
 

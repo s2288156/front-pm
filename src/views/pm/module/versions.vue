@@ -20,7 +20,7 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="200">
-        <template v-slot="{row,$index}">
+        <template v-slot="{row}">
           <el-button type="primary" size="mini" @click="handleEditVersion(row)">
             {{ $t('table.edit') }}
           </el-button>
