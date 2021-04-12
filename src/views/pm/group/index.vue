@@ -161,15 +161,18 @@ export default {
     },
     handleDeleteGroup(row, index) {
       alert('待开发')
-      // deleteGroup(row.id).then(() => {
-      //   this.$notify({
-      //     title: 'Success',
-      //     message: '组删除成功',
-      //     type: 'success',
-      //     duration: 2000
-      //   })
-      //   this.list.splice(index, 1)
-      // })
+      // todo
+      if (false) {
+        deleteGroup(row.id).then(() => {
+          this.$notify({
+            title: 'Success',
+            message: '组删除成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.list.splice(index, 1)
+        })
+      }
     }
   }
 }
