@@ -121,6 +121,7 @@ export default {
   created() {
     this.listQuery.pid = this.$route.query.pid
     this.fetchData()
+    this.requestProjectsData()
   },
   methods: {
     fetchData() {
