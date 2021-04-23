@@ -2,7 +2,6 @@
 
 ## Project setup
 ```
-npm install
 npm install --registry=https://registry.npm.taobao.org
 
 # check package update version 
@@ -19,7 +18,7 @@ ncu -u
 
 ### Compiles and hot-reloads for development
 ```
-npm run serve
+npm run dev
 ```
 
 ### Compiles and minifies for production
