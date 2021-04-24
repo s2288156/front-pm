@@ -8,7 +8,7 @@
         icon="el-icon-refresh"
         @click="fetchData"
       >
-        {{ titleMap.reload }}
+        {{ $t('table.search') }}
       </el-button>
       <el-button
         class="filter-item"
@@ -17,7 +17,7 @@
         icon="el-icon-edit"
         @click="handleAddUser"
       >
-        {{ titleMap.addUser }}
+        {{ $t('table.add') }}
       </el-button>
     </div>
 
@@ -30,16 +30,16 @@
       fit
       highlight-current-row
     >
-      <el-table-column type="index" :index="1" align="center" label="No." width="95" />
-      <el-table-column prop="username" label="用户名" align="center" />
-      <el-table-column prop="name" label="姓名" align="center" />
-      <el-table-column prop="gender" label="性别" width="110" align="center" />
-      <el-table-column class-name="status-col" label="状态" width="110" align="center">
+      <el-table-column type="index" :index="1" align="center" label="No." width="60" />
+      <el-table-column label="头像" align="center" width="80">
         <template v-slot="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
+          <el-avatar :src="scope.row.avatar" />
         </template>
       </el-table-column>
-      <el-table-column align="center" prop="created_at" label="注册时间" width="250">
+      <el-table-column prop="id" label="ID" align="center" />
+      <el-table-column prop="username" label="用户名" align="center" />
+      <el-table-column prop="name" label="姓名" align="center" />
+      <el-table-column align="center" label="注册时间" width="250">
         <template v-slot="scope">
           <i class="el-icon-time" />
           <span>{{ scope.row.createTime }}</span>
@@ -47,11 +47,8 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="200">
         <template v-slot="{row}">
-          <el-button type="primary" size="mini" @click="handleUpdateAdmin(row)">
-            {{ titleMap.edit }}
-          </el-button>
-          <el-button type="success" size="mini" @click="handleAssignRole(row)">
-            {{ titleMap.assignRole }}
+          <el-button type="primary" size="mini" @click="handleUpdateUser(row)">
+            {{ $t('table.edit') }}
           </el-button>
         </template>
       </el-table-column>
@@ -65,59 +62,27 @@
       @pagination="fetchData"
     />
 
-    <el-dialog :title="dialogTitleMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :rules="rules" :model="userInfo" label-position="left" label-width="100px">
         <el-form-item label="Id" prop="id">
-          <span>{{ temp.id }}</span>
+          <span>{{ userInfo.id }}</span>
         </el-form-item>
         <el-form-item label="Username" prop="username">
-          <el-input v-model="temp.username" />
+          <el-input v-model="userInfo.username" />
         </el-form-item>
         <el-form-item v-show="dialogStatus==='create'" label="Password" prop="password">
-          <el-input v-model="temp.password" />
+          <el-input v-model="userInfo.password" />
         </el-form-item>
         <el-form-item label="Name" prop="name">
-          <el-input v-model="temp.name" />
-        </el-form-item>
-        <el-form-item v-show="dialogStatus==='update'" label="Gender">
-          <el-radio-group v-model="temp.gender">
-            <el-radio label="MALE" />
-            <el-radio label="FEMALE" />
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item v-show="dialogStatus==='update'" label="Status">
-          <el-radio-group v-model="temp.status">
-            <el-radio label="ACTIVE" />
-            <el-radio label="DELETED" />
-            <el-radio label="FROZEN" />
-          </el-radio-group>
+          <el-input v-model="userInfo.name" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
-          {{ titleMap.cancel }}
+          {{ $t('table.cancel') }}
         </el-button>
         <el-button type="primary" @click="dialogStatus==='create'?addUser():updateData()">
-          {{ titleMap.confirm }}
-        </el-button>
-      </div>
-    </el-dialog>
-
-    <el-dialog :title="titleMap.assignRole" :visible.sync="dialogAssignRoleVisible">
-      <el-drag-select v-model="assignRoleData.roleNames" style="width: 500px;" multiple placeholder="请选择">
-        <el-option
-          v-for="role in assignRoleData.roles"
-          :key="role.id"
-          :label="role.name"
-          :value="role.name"
-        />
-      </el-drag-select>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogAssignRoleVisible= false">
-          {{ titleMap.cancel }}
-        </el-button>
-        <el-button type="primary" @click="assignRole">
-          {{ titleMap.confirm }}
+          {{ $t('table.confirm') }}
         </el-button>
       </div>
     </el-dialog>
@@ -125,24 +90,12 @@
 </template>
 
 <script>
-import { addUser, getList, update } from '@/api/user'
-import { assign, listFor, listAll } from '@/api/role'
+import { registerUser, listUser } from '@/api/user'
 import Pagination from '@/components/Pagination'
-import ElDragSelect from '@/components/DragSelect'
 
 export default {
   name: 'UserList',
-  components: { Pagination, ElDragSelect },
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        DELETED: 'danger',
-        ACTIVE: 'success',
-        FROZEN: ''
-      }
-      return statusMap[status]
-    }
-  },
+  components: { Pagination },
   data() {
     return {
       tableKey: 0,
@@ -154,40 +107,20 @@ export default {
         limit: 20,
         sort: '+id'
       },
-      temp: {
+      textMap: {
+        add: this.$t('table.add'),
+        edit: this.$t('table.edit')
+      },
+      userInfo: {
         id: undefined,
         name: undefined,
-        gender: undefined,
-        status: undefined,
         username: undefined,
         createTime: undefined,
-        password: undefined
+        password: undefined,
+        confirmPassword: undefined
       },
       dialogStatus: '', // dialog状态
-      dialogFormVisible: false, // dialog默认不显示
-      dialogTitleMap: {
-        update: '编辑',
-        create: '新增'
-      },
-      titleMap: {
-        edit: '编辑',
-        assignUser: '分配角色',
-        confirm: '确认',
-        cancel: '取消',
-        addUser: '新增用户',
-        reload: '刷新',
-        action: '操作'
-      },
-      rules: {
-        username: [{ required: true, message: 'username is required', trigger: 'change' }]
-      },
-      dialogAssignRoleVisible: false,
-      assignRoleData: {
-        uid: '',
-        roleNames: [''],
-        roleIdMap: new Map(),
-        roles: [{ id: '', name: '', description: '' }]
-      }
+      dialogFormVisible: false // dialog默认不显示
     }
   },
   created() {
@@ -196,44 +129,16 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList(this.listQuery).then(response => {
-        this.list = response.data.records
-        this.total = response.data.total
+      listUser(this.listQuery).then(response => {
+        this.list = response.data
+        this.total = response.total
         this.listLoading = false
       })
     },
-    handleUpdateAdmin(row) {
-      this.temp = Object.assign({}, row)
-      this.dialogStatus = 'update'
-      this.dialogFormVisible = true
-      this.$nextTick(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
-    },
-    updateData() {
-      this.$refs['dataForm'].validate((valid) => {
-        if (valid) {
-          const tempData = Object.assign({}, this.temp)
-          update(tempData).then(() => {
-            const index = this.list.findIndex(v => v.id === this.temp.id)
-            this.list.splice(index, 1, this.temp)
-            this.dialogFormVisible = false
-            this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
-              type: 'success',
-              duration: 2000
-            })
-          })
-        }
-      })
-    },
     resetTemp() {
-      this.temp = {
+      this.userInfo = {
         id: undefined,
         name: '',
-        gender: undefined,
-        status: undefined,
         username: '',
         createTime: undefined,
         password: ''
@@ -241,7 +146,7 @@ export default {
     },
     handleAddUser() {
       this.resetTemp()
-      this.dialogStatus = 'create'
+      this.dialogStatus = 'add'
       this.dialogFormVisible = true
       this.nextTick()(() => {
         this.$refs['dataForm'].clearValidate()
@@ -250,8 +155,8 @@ export default {
     addUser() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          addUser(this.temp).then(response => {
-            this.temp = Object.assign({}, response.data)
+          registerUser(this.userInfo).then(response => {
+            this.userInfo = Object.assign({}, response.data)
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
@@ -264,41 +169,11 @@ export default {
         }
       })
     },
-    handleAssignRole(row) {
-      listFor(row.id).then(response => {
-        this.assignRoleData.roleNames = response.data.map(function(value) {
-          return value.name
-        })
-        this.assignRoleData.uid = row.id
-      })
-      listAll().then(response => {
-        this.assignRoleData.roles = response.data
-        const map = new Map()
-        this.assignRoleData.roles.forEach(function(value) {
-          map.set(value.description, value.id)
-        })
-        this.assignRoleData.roleIdMap = map
-        this.dialogAssignRoleVisible = true
-      })
+    handleUpdateUser(row) {
+      alert('待开发')
     },
-    assignRole() {
-      const param = {
-        uid: this.assignRoleData.uid,
-        roleIds: []
-      }
-      const map = this.assignRoleData.roleIdMap
-      this.assignRoleData.roleNames.forEach(function(value) {
-        param.roleIds.push(map.get(value))
-      })
-      assign(param).then(() => {
-        this.dialogAssignRoleVisible = false
-        this.$notify({
-          title: 'Success',
-          message: '角色分配成功',
-          type: 'success',
-          duration: 2000
-        })
-      })
+    updateData() {
+      alert('待开发')
     }
   }
 }

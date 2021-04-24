@@ -61,7 +61,6 @@ export const constantRoutes = [
     redirect: '/sys/users',
     name: '系统管理',
     meta: { title: '系统管理', icon: 'example' },
-    hidden: true,
     children: [
       {
         path: 'users',
@@ -72,6 +71,7 @@ export const constantRoutes = [
       {
         path: 'roles',
         name: 'Roles',
+        hidden: true,
         component: () => import('@/views/sys/roles/index'),
         meta: { title: '角色列表', icon: 'form' }
       }

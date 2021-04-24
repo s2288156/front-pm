@@ -23,24 +23,17 @@ export function logout() {
   })
 }
 
-export function getList(query) {
+export function listUser(query) {
   return request({
-    url: '/admin/list',
+    url: '/user/list',
+    method: 'get',
     params: query
   })
 }
 
-export function update(data) {
+export function registerUser(data) {
   return request({
-    url: '/admin/update',
-    method: 'post',
-    data
-  })
-}
-
-export function addUser(data) {
-  return request({
-    url: '/admin/add',
+    url: '/user/register',
     method: 'post',
     data
   })
