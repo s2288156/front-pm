@@ -64,16 +64,19 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="userInfo" label-position="left" label-width="100px">
-        <el-form-item label="Id" prop="id">
+        <el-form-item v-show="dialogStatus==='update'" label="Id" prop="id">
           <span>{{ userInfo.id }}</span>
         </el-form-item>
-        <el-form-item label="Username" prop="username">
+        <el-form-item label="用户名" prop="username">
           <el-input v-model="userInfo.username" />
         </el-form-item>
-        <el-form-item v-show="dialogStatus==='create'" label="Password" prop="password">
+        <el-form-item v-show="dialogStatus==='create'" label="密码" prop="password">
           <el-input v-model="userInfo.password" />
         </el-form-item>
-        <el-form-item label="Name" prop="name">
+        <el-form-item v-show="dialogStatus==='create'" label="确认密码" prop="confirmPassword">
+          <el-input v-model="userInfo.confirmPassword" />
+        </el-form-item>
+        <el-form-item label="姓名" prop="name">
           <el-input v-model="userInfo.name" />
         </el-form-item>
       </el-form>
@@ -108,16 +111,21 @@ export default {
         sort: '+id'
       },
       textMap: {
-        add: this.$t('table.add'),
+        create: this.$t('table.add'),
         edit: this.$t('table.edit')
       },
       userInfo: {
         id: undefined,
         name: undefined,
         username: undefined,
-        createTime: undefined,
         password: undefined,
         confirmPassword: undefined
+      },
+      rules: {
+        name: [{ required: true, message: 'name is required', trigger: 'change' }],
+        username: [{ required: true, message: 'username is required', trigger: 'change' }],
+        password: [{ required: true, message: 'password is required', trigger: 'change' }],
+        confirmPassword: [{ required: true, message: 'confirmPassword is required', trigger: 'change' }]
       },
       dialogStatus: '', // dialog状态
       dialogFormVisible: false // dialog默认不显示
@@ -137,16 +145,15 @@ export default {
     },
     resetTemp() {
       this.userInfo = {
-        id: undefined,
-        name: '',
-        username: '',
-        createTime: undefined,
-        password: ''
+        name: undefined,
+        username: undefined,
+        password: undefined,
+        confirmPassword: undefined
       }
     },
     handleAddUser() {
       this.resetTemp()
-      this.dialogStatus = 'add'
+      this.dialogStatus = 'create'
       this.dialogFormVisible = true
       this.nextTick()(() => {
         this.$refs['dataForm'].clearValidate()
