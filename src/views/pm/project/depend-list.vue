@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
       <el-button class="filter-item" style="margin-left: 10px;" type="primary" icon="el-icon-edit" @click="handleAddProject">
-        {{ $t('table.add') }}
+        添加依赖模块
       </el-button>
     </div>
 
@@ -80,7 +80,7 @@ export default {
       total: 0,
       listLoading: true,
       textMap: {
-        add: this.$t('table.add'),
+        add: '添加依赖模块',
         edit: this.$t('table.edit')
       },
       listQuery: {
