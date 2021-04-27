@@ -38,11 +38,13 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
-        commit('SET_TOKEN', data)
         // TODO 权限加入后处理
-        // commit('SET_TOKEN', data.access_token)
-        // setToken(data.access_token)
-        setToken(data)
+        const { token, avatar, name, roles } = data
+        commit('SET_TOKEN', token)
+        commit('SET_NAME', name)
+        commit('SET_AVATAR', avatar)
+        commit('SET_ROLES', roles)
+        setToken(data.token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -50,7 +52,7 @@ const actions = {
     })
   },
 
-  // get users info
+  // todo: get users info 整合到login中
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.accessToken).then(response => {
