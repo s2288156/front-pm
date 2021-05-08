@@ -39,6 +39,9 @@
           <el-button type="primary" size="mini" @click="toDependList(row)">
             {{ $t('table.dependModuleList') }}
           </el-button>
+          <el-button size="mini" type="danger" @click="handleDeleteProject(row)">
+            {{ $t('table.delete') }}
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -78,7 +81,7 @@
 </template>
 
 <script>
-import { listProjects, add } from '@/api/projects'
+import { listProjects, add, deleteProject } from '@/api/projects'
 import { listGroup } from '@/api/group'
 import Pagination from '@/components/Pagination'
 
@@ -136,6 +139,7 @@ export default {
       }
       this.requestGroupData()
     },
+    // 组下拉框列表
     requestGroupData() {
       listGroup(this.listQuery).then(response => {
         this.groupsData = response.data
@@ -170,6 +174,17 @@ export default {
     },
     skipToModules(pid) {
       this.$router.push({ path: '/pm/module', query: { pid: pid }})
+    },
+    handleDeleteProject(row) {
+      deleteProject(row).then(() => {
+        this.$notify({
+          title: 'Success',
+          message: '项目删除成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.fetchData()
+      })
     }
   }
 }

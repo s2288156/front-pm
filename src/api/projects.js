@@ -16,6 +16,14 @@ export function add(data) {
   })
 }
 
+export function deleteProject(data) {
+  return request({
+    url: '/project',
+    method: 'delete',
+    data
+  })
+}
+
 export function dependAdd(data) {
   return request({
     url: '/project/depend',
