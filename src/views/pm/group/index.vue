@@ -40,9 +40,6 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="200">
         <template v-slot="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleEditRole(row)">
-            {{ $t('table.edit') }}
-          </el-button>
           <el-button size="mini" type="danger" @click="handleDeleteGroup(row,$index)">
             {{ $t('table.delete') }}
           </el-button>
@@ -80,7 +77,7 @@
 </template>
 
 <script>
-import { listGroup, add } from '@/api/group'
+import { listGroup, add, deleteGroup } from '@/api/group'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -153,15 +150,16 @@ export default {
         }
       })
     },
-    handleEditRole() {
-      alert('待开发')
-    },
-    handleAssignUser() {
-      alert('待开发')
-    },
-    handleDeleteGroup(row, index) {
-      alert('待开发')
-      // todo
+    handleDeleteGroup(row) {
+      deleteGroup(row.id).then(() => {
+        this.$notify({
+          title: 'Success',
+          message: '组删除成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.fetchData()
+      })
     }
   }
 }
