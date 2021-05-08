@@ -16,6 +16,14 @@ export function addModule(data) {
   })
 }
 
+export function deleteModule(data) {
+  return request({
+    url: '/module',
+    method: 'delete',
+    data
+  })
+}
+
 export function listModuleVersions(query) {
   return request({
     url: '/module/version/list',

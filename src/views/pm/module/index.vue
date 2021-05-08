@@ -33,11 +33,11 @@
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="200">
-        <template v-slot="{row,$index}">
+        <template v-slot="{row}">
           <el-button type="primary" size="mini" @click="handleSkipVersionList(row)">
             {{ $t('table.versionList') }}
           </el-button>
-          <el-button size="mini" type="danger" @click="handleDeleteGroup(row,$index)">
+          <el-button size="mini" type="danger" @click="handleDeleteModule(row)">
             {{ $t('table.delete') }}
           </el-button>
         </template>
@@ -80,7 +80,7 @@
 
 <script>
 import { listProjects } from '@/api/projects'
-import { listModules, addModule } from '@/api/module'
+import { listModules, addModule, deleteModule } from '@/api/module'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -174,11 +174,16 @@ export default {
     handleSkipVersionList(row) {
       this.$router.push({ path: '/pm/module-versions', query: { mid: row.id, name: row.name }})
     },
-    handleAssignUser() {
-      alert('待开发')
-    },
-    handleDeleteGroup(row, index) {
-      alert('待开发')
+    handleDeleteModule(row) {
+      deleteModule(row).then(() => {
+        this.$notify({
+          title: 'Success',
+          message: '模块删除成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.fetchData()
+      })
     }
   }
 }
