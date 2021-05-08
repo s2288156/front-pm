@@ -46,7 +46,7 @@
         <el-button @click="dialogVisible = false">
           {{ $t('table.cancel') }}
         </el-button>
-        <el-button type="primary" @click="dialogStatus === 'add ' ? addVersion() : editVersion()">
+        <el-button type="primary" @click="dialogStatus === 'add' ? addVersion() : editVersion()">
           {{ $t('table.confirm') }}
         </el-button>
       </div>
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { listModuleVersions, addVersion, updateVersion } from '@/api/module'
+import { listModuleVersions, addVersion, updateVersion, deleteModuleVersion } from '@/api/module'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -155,7 +155,15 @@ export default {
       })
     },
     handleDeleteVersion(row) {
-      alert('待开发')
+      deleteModuleVersion(row).then(() => {
+        this.$notify({
+          title: 'Success',
+          message: '删除成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.fetchData()
+      })
     }
   }
 }

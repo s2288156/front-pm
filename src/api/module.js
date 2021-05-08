@@ -39,3 +39,11 @@ export function updateVersion(data) {
     data
   })
 }
+
+export function deleteModuleVersion(data) {
+  return request({
+    url: '/module/version',
+    method: 'delete',
+    data
+  })
+}
