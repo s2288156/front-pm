@@ -72,7 +72,7 @@
         <el-button @click="dialogVisible = false">
           {{ $t('table.cancel') }}
         </el-button>
-        <el-button type="primary" :disabled="confirmDisable" @click="addProject">
+        <el-button type="primary" :disabled="!dialogVisible" @click="addProject">
           {{ $t('table.confirm') }}
         </el-button>
       </div>
@@ -107,7 +107,6 @@ export default {
         groupId: [{ required: true, message: 'groupId is required', trigger: 'change' }]
       },
       dialogVisible: false,
-      confirmDisable: false,
       dialogStatus: '',
       groupsData: [],
       dialogFormData: {
@@ -150,7 +149,6 @@ export default {
       this.resetProjectFormData()
       this.dialogStatus = 'add'
       this.dialogVisible = true
-      this.confirmDisable = false
       this.$nextTick(() => {
         this.$refs['dialogForm'].clearValidate()
       })
@@ -158,7 +156,6 @@ export default {
     addProject() {
       this.$refs['dialogForm'].validate((valid) => {
         if (valid) {
-          this.confirmDisable = true
           add(this.dialogFormData).then(() => {
             this.dialogVisible = false
             this.$notify({
