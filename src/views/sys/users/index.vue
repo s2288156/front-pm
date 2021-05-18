@@ -71,10 +71,10 @@
           <el-input v-model="userInfo.username" />
         </el-form-item>
         <el-form-item v-show="dialogStatus==='create'" label="密码" prop="password">
-          <el-input v-model="userInfo.password" />
+          <el-input v-model="userInfo.password" show-password />
         </el-form-item>
         <el-form-item v-show="dialogStatus==='create'" label="确认密码" prop="confirmPassword">
-          <el-input v-model="userInfo.confirmPassword" />
+          <el-input v-model="userInfo.confirmPassword" show-password />
         </el-form-item>
         <el-form-item label="姓名" prop="name">
           <el-input v-model="userInfo.name" />
@@ -122,10 +122,11 @@ export default {
         confirmPassword: undefined
       },
       rules: {
-        name: [{ required: true, message: 'name is required', trigger: 'change' }],
-        username: [{ required: true, message: 'username is required', trigger: 'change' }],
-        password: [{ required: true, message: 'password is required', trigger: 'change' }],
-        confirmPassword: [{ required: true, message: 'confirmPassword is required', trigger: 'change' }]
+        // change(value值改变)，focus(获到焦点)，blur(失去焦点)
+        name: [{ required: true, message: 'name is required', trigger: 'blur' }],
+        username: [{ required: true, message: 'username is required', trigger: 'blur' }],
+        password: [{ required: true, message: 'password is required', trigger: 'blur' }],
+        confirmPassword: [{ required: true, message: 'confirmPassword is required', trigger: 'blur' }]
       },
       dialogStatus: '', // dialog状态
       dialogFormVisible: false // dialog默认不显示
@@ -155,9 +156,7 @@ export default {
       this.resetTemp()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
-      this.nextTick()(() => {
-        this.$refs['dataForm'].clearValidate()
-      })
+      this.$refs['dataForm'].clearValidate()
     },
     addUser() {
       this.$refs['dataForm'].validate((valid) => {
