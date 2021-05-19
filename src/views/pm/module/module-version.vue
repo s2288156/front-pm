@@ -12,6 +12,12 @@
     <el-table :key="tableKey" v-loading="listLoading" :data="list" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column type="index" :index="1" align="center" label="No." width="95" />
       <el-table-column prop="version" label="版本号" align="center" />
+      <el-table-column label="版本号" align="center">
+        <template v-slot="{ row }">
+          <el-tag v-show="row.isLatest">最新版本</el-tag>
+          <span> {{ row.version }}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="description" label="描述" align="center" />
       <el-table-column align="center" label="创建时间" width="250">
         <template v-slot="scope">

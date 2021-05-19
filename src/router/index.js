@@ -113,8 +113,9 @@ export const constantRoutes = [
       {
         path: 'module-versions',
         name: 'ModuleVersions',
-        component: () => import('@/views/pm/module-version/index'),
-        meta: { title: '模块版本列表', icon: 'account' }
+        component: () => import('@/views/pm/module/module-version'),
+        meta: { title: '模块版本列表', icon: 'account' },
+        hidden: true
       }
     ]
   }
@@ -212,6 +213,11 @@ const router = createRouter()
 export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router
+}
+
+const originalPush = Router.prototype.push
+Router.prototype.push = function push(location) {
+  return originalPush.call(this, location).catch(err => err)
 }
 
 export default router
