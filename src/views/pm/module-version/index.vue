@@ -92,7 +92,7 @@ export default {
     }
   },
   created() {
-    this.listQuery.mid = this.$route.query.mid
+    this.listQuery.mid = this.$route.params.mid
     this.fetchData()
   },
   methods: {

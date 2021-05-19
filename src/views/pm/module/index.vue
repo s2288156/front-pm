@@ -172,7 +172,8 @@ export default {
       })
     },
     handleSkipVersionList(row) {
-      this.$router.push({ path: '/pm/module-versions', query: { mid: row.id, name: row.name }})
+      // this.$router.push({ path: '/pm/module/module-versions', query: { mid: row.id, name: row.name }})
+      this.$router.push({ name: 'ModuleVersions', params: { mid: row.id, name: row.name }})
     },
     handleDeleteModule(row) {
       deleteModule(row).then(() => {
