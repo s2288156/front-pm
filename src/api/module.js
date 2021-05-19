@@ -48,6 +48,14 @@ export function updateVersion(data) {
   })
 }
 
+export function updateModuleLatestVersion(data) {
+  return request({
+    url: '/module/latest_version',
+    method: 'put',
+    data
+  })
+}
+
 export function deleteModuleVersion(data) {
   return request({
     url: '/module/version',

@@ -27,12 +27,20 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="200">
         <template v-slot="{row}">
-          <el-button type="primary" size="mini" @click="handleEditVersion(row)">
-            {{ $t('table.edit') }}
-          </el-button>
-          <el-button size="mini" type="danger" @click="handleDeleteVersion(row)">
-            {{ $t('table.delete') }}
-          </el-button>
+          <el-row style="line-height: 40px">
+            <el-button type="success" size="mini" @click="handleUpdateModuleLatestVersion()">
+              设置为最新版本
+            </el-button>
+          </el-row>
+
+          <el-row>
+            <el-button type="primary" size="mini" @click="handleEditVersion(row)">
+              {{ $t('table.edit') }}
+            </el-button>
+            <el-button size="mini" type="danger" @click="handleDeleteVersion(row)">
+              {{ $t('table.delete') }}
+            </el-button>
+          </el-row>
         </template>
       </el-table-column>
     </el-table>
@@ -61,7 +69,7 @@
 </template>
 
 <script>
-import { listModuleVersions, addVersion, updateVersion, deleteModuleVersion } from '@/api/module'
+import { listModuleVersions, addVersion, updateVersion, deleteModuleVersion, updateModuleLatestVersion } from '@/api/module'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -170,6 +178,9 @@ export default {
         })
         this.fetchData()
       })
+    },
+    handleUpdateModuleLatestVersion() {
+      alert('111')
     }
   }
 }
