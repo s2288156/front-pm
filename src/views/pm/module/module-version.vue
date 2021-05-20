@@ -28,7 +28,7 @@
       <el-table-column align="center" label="操作" width="200">
         <template v-slot="{row}">
           <el-row style="line-height: 40px">
-            <el-button type="success" size="mini" @click="handleUpdateModuleLatestVersion()">
+            <el-button type="success" size="mini" @click="handleUpdateModuleLatestVersion(row)">
               设置为最新版本
             </el-button>
           </el-row>
@@ -179,8 +179,20 @@ export default {
         this.fetchData()
       })
     },
-    handleUpdateModuleLatestVersion() {
-      alert('111')
+    handleUpdateModuleLatestVersion(row) {
+      const updateModuleLatestVersionCmd = {
+        id: this.$route.params.mid,
+        latestVersion: row.version
+      }
+      updateModuleLatestVersion(updateModuleLatestVersionCmd).then(() => {
+        this.$notify({
+          title: 'Success',
+          message: '设置成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.fetchData()
+      })
     }
   }
 }
