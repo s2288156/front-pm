@@ -86,9 +86,11 @@
 
 <script>
 import { pageRole, addRole, deleteRole } from '@/api/role'
+import Pagination from '@/components/Pagination'
 
 export default {
   name: 'RoleList',
+  components: { Pagination },
   data() {
     return {
       tableKey: 0,
@@ -129,6 +131,7 @@ export default {
     fetchData() {
       pageRole(this.listQuery).then(response => {
         this.list = response.data
+        this.total = response.total
         this.listLoading = false
       })
     },
@@ -142,12 +145,15 @@ export default {
       this.resetDialogFormData()
       this.dialogStatus = 'create'
       this.dialogFormVisible = true
-      this.$refs['dataForm'].clearValidate()
+      this.$nextTick(() => {
+        this.$refs['dialogForm'].clearValidate()
+      })
     },
     addRole() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           addRole(this.roleInfo).then(() => {
+            this.roleInfo = Object.assign({}, response.data)
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
@@ -170,14 +176,24 @@ export default {
       alert('handle assign user')
     },
     deleteRole(row) {
-      deleteRole(row.id).then(() => {
-        this.$notify({
-          title: 'Success',
-          message: '删除成功',
-          type: 'success',
-          duration: 2000
+      this.$confirm('确认要删除此角色吗？', '警告', {
+        confirmButtonText: this.$t('table.confirm'),
+        cancelButtonText: this.$t('table.cancel')
+      }).then(() => {
+        deleteRole(row.id).then(() => {
+          this.$notify({
+            title: 'Success',
+            message: '删除成功',
+            type: 'success',
+            duration: 2000
+          })
+          this.fetchData()
         })
-        this.fetchData()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
       })
     }
   }
