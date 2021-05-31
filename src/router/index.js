@@ -59,6 +59,7 @@ export const constantRoutes = [
     path: '/sys',
     component: Layout,
     redirect: '/sys/users',
+    alwaysShow: true,
     name: '系统管理',
     meta: { title: '系统管理', icon: 'example' },
     children: [
@@ -82,6 +83,7 @@ export const constantRoutes = [
     path: '/pm',
     component: Layout,
     redirect: '/pm/group',
+    alwaysShow: true,
     name: '项目管理',
     meta: { title: '项目管理', icon: 'el-icon-dish' },
     children: [
