@@ -54,11 +54,33 @@
       @pagination="fetchData"
     />
 
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+      <el-form ref="dataForm" :rules="rules" :model="roleInfo" label-position="left" label-width="100px">
+        <el-form-item v-show="dialogStatus==='update'" label="Id" prop="id">
+          <span>{{ roleInfo.id }}</span>
+        </el-form-item>
+        <el-form-item label="Role" prop="role">
+          <el-input v-model="roleInfo.role" />
+        </el-form-item>
+        <el-form-item label="Name" prop="name">
+          <el-input v-model="roleInfo.name" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">
+          {{ $t('table.cancel') }}
+        </el-button>
+        <el-button type="primary" @click="dialogStatus==='create'?addRole():updateRole()">
+          {{ $t('table.confirm') }}
+        </el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-import { pageRole } from '@/api/role'
+import { pageRole, addRole } from '@/api/role'
 
 export default {
   name: 'RoleList',
@@ -74,9 +96,24 @@ export default {
         edit: '编辑',
         assignUser: '分配用户'
       },
+      roleInfo: {
+        role: undefined,
+        name: undefined
+      },
+      dialogStatus: '',
       listQuery: {
         page: 1,
         limit: 20
+      },
+      textMap: {
+        create: this.$t('table.add'),
+        edit: this.$t('table.edit')
+      },
+      dialogFormVisible: false,
+      rules: {
+        // change(value值改变)，focus(获到焦点)，blur(失去焦点)
+        name: [{ required: true, message: 'name is required', trigger: 'blur' }],
+        role: [{ required: true, message: 'role is required', trigger: 'blur' }]
       }
     }
   },
@@ -85,17 +122,44 @@ export default {
   },
   methods: {
     fetchData() {
-      console.log('fetch data')
       pageRole(this.listQuery).then(response => {
         this.list = response.data
         this.listLoading = false
       })
     },
+    resetDialogFormData() {
+      this.roleInfo = {
+        role: undefined,
+        name: undefined
+      }
+    },
     handleAddRole() {
-      alert('add role')
+      this.resetDialogFormData()
+      this.dialogStatus = 'create'
+      this.dialogFormVisible = true
+      this.$refs['dataForm'].clearValidate()
+    },
+    addRole() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          addRole(this.roleInfo).then(() => {
+            this.dialogFormVisible = false
+            this.$notify({
+              title: 'Success',
+              message: 'Created Successfully',
+              type: 'success',
+              duration: 2000
+            })
+            this.fetchData()
+          })
+        }
+      })
     },
     handleEditRole() {
       alert('edit role')
+    },
+    updateRole() {
+      alert('待开发')
     },
     handleAssignUser() {
       alert('handle assign user')

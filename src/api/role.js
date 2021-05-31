@@ -8,3 +8,10 @@ export function pageRole(query) {
   })
 }
 
+export function addRole(data) {
+  return request({
+    url: '/role',
+    method: 'post',
+    data
+  })
+}
