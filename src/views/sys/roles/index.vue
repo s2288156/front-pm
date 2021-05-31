@@ -31,14 +31,9 @@
       highlight-current-row
     >
       <el-table-column type="index" :index="1" align="center" label="No." width="95" />
+      <el-table-column prop="role" label="角色" align="center" width="300" />
       <el-table-column prop="name" label="角色名称" align="center" width="300" />
-      <el-table-column prop="description" label="描述" align="center" />
-      <el-table-column align="center" label="注册时间" width="250">
-        <template v-slot="scope">
-          <i class="el-icon-time" />
-          <span>{{ scope.row.createTime }}</span>
-        </template>
-      </el-table-column>
+      <el-table-column prop="remark" label="备注" align="center" />
       <el-table-column align="center" label="操作" width="200">
         <template v-slot="{row}">
           <el-button type="primary" size="mini" @click="handleEditRole(row)">
@@ -63,7 +58,7 @@
 </template>
 
 <script>
-import { listAll } from '@/api/role'
+import { pageRole } from '@/api/role'
 
 export default {
   name: 'RoleList',
@@ -91,7 +86,7 @@ export default {
   methods: {
     fetchData() {
       console.log('fetch data')
-      listAll().then(response => {
+      pageRole(this.listQuery).then(response => {
         this.list = response.data
         this.listLoading = false
       })

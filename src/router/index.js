@@ -72,7 +72,6 @@ export const constantRoutes = [
       {
         path: 'roles',
         name: 'Roles',
-        hidden: true,
         component: () => import('@/views/sys/roles/index'),
         meta: { title: '角色列表', icon: 'form' }
       }

@@ -1,23 +1,10 @@
 import request from '@/utils/request'
 
-export function listFor(uid) {
+export function pageRole(query) {
   return request({
-    url: '/role/list/' + uid,
-    method: 'get'
+    url: '/role/list',
+    method: 'get',
+    params: query
   })
 }
 
-export function listAll() {
-  return request({
-    url: '/role/list_all',
-    method: 'get'
-  })
-}
-
-export function assign(data) {
-  return request({
-    url: '/role/assign',
-    method: 'post',
-    data
-  })
-}
