@@ -36,11 +36,16 @@
       <el-table-column prop="remark" label="备注" align="center" />
       <el-table-column align="center" label="操作" width="200">
         <template v-slot="{row}">
-          <el-button type="primary" size="mini" @click="handleEditRole(row)">
-            {{ titleMap.edit }}
-          </el-button>
-          <el-button type="success" size="mini" @click="handleAssignUser(row)">
-            {{ titleMap.assignUser }}
+          <el-row style="line-height: 40px">
+            <el-button type="primary" size="mini" @click="handleEditRole(row)">
+              {{ titleMap.edit }}
+            </el-button>
+            <el-button type="success" size="mini" @click="handleAssignUser(row)">
+              {{ titleMap.assignUser }}
+            </el-button>
+          </el-row>
+          <el-button type="danger" size="mini" @click="deleteRole(row)">
+            {{ $t('table.delete') }}
           </el-button>
         </template>
       </el-table-column>
@@ -80,7 +85,7 @@
 </template>
 
 <script>
-import { pageRole, addRole } from '@/api/role'
+import { pageRole, addRole, deleteRole } from '@/api/role'
 
 export default {
   name: 'RoleList',
@@ -163,6 +168,17 @@ export default {
     },
     handleAssignUser() {
       alert('handle assign user')
+    },
+    deleteRole(row) {
+      deleteRole(row.id).then(() => {
+        this.$notify({
+          title: 'Success',
+          message: '删除成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.fetchData()
+      })
     }
   }
 }

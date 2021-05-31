@@ -15,3 +15,11 @@ export function addRole(data) {
     data
   })
 }
+
+export function deleteRole(id) {
+  return request({
+    url: '/role/' + id,
+    method: 'delete'
+  })
+}
+
