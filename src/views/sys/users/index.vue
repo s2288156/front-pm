@@ -80,7 +80,7 @@
           <el-input v-model="userInfo.name" />
         </el-form-item>
         <el-form-item label="Role">
-          <el-tree ref="tree" :data="userRoleList" :props="defaultProps" show-checkbox />
+          <el-tree ref="tree" :data="allRoleList" :props="defaultProps" show-checkbox node-key="id" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -125,6 +125,7 @@ export default {
         password: undefined,
         confirmPassword: undefined
       },
+      allRoleList: [],
       userRoleList: [],
       defaultProps: {
         label: 'role'
@@ -198,8 +199,16 @@ export default {
         uid: row.id
       }
       this.dialogVisible = true
+      listRoleByUid([]).then(response => {
+        this.allRoleList = response.data
+      })
       listRoleByUid(listRoleQuery).then(response => {
         this.userRoleList = response.data
+      })
+      this.$nextTick(() => {
+        const nodes = [{ id: '2', role: 'GUEST', name: '参观者' }]
+        this.$refs.tree.setCheckedNodes(nodes)
+        console.log(nodes)
       })
     },
     updateData() {

@@ -10,7 +10,7 @@ export function pageRole(query) {
 
 export function listRoleByUid(query) {
   return request({
-    url: '/role/list',
+    url: '/role/list/by_uid',
     method: 'get',
     params: query
   })
