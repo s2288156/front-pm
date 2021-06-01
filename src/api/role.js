@@ -8,6 +8,14 @@ export function pageRole(query) {
   })
 }
 
+export function listRoleByUid(query) {
+  return request({
+    url: '/role/list',
+    method: 'get',
+    params: query
+  })
+}
+
 export function addRole(data) {
   return request({
     url: '/role',

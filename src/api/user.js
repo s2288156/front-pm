@@ -38,3 +38,11 @@ export function registerUser(data) {
     data
   })
 }
+
+export function setRoles(data) {
+  return request({
+    url: '/user/set_roles',
+    method: 'post',
+    data
+  })
+}

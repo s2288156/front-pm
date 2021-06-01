@@ -62,7 +62,7 @@
       @pagination="fetchData"
     />
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogVisible">
       <el-form ref="dataForm" :rules="rules" :model="userInfo" label-position="left" label-width="100px">
         <el-form-item v-show="dialogStatus==='update'" label="Id" prop="id">
           <span>{{ userInfo.id }}</span>
@@ -79,9 +79,12 @@
         <el-form-item label="姓名" prop="name">
           <el-input v-model="userInfo.name" />
         </el-form-item>
+        <el-form-item label="Role">
+          <el-tree ref="tree" :data="userRoleList" :props="defaultProps" show-checkbox />
+        </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
+        <el-button @click="dialogVisible = false">
           {{ $t('table.cancel') }}
         </el-button>
         <el-button type="primary" @click="dialogStatus==='create'?addUser():updateData()">
@@ -93,7 +96,8 @@
 </template>
 
 <script>
-import { registerUser, listUser } from '@/api/user'
+import { registerUser, listUser, setRoles } from '@/api/user'
+import { listRoleByUid } from '@/api/role'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -121,6 +125,10 @@ export default {
         password: undefined,
         confirmPassword: undefined
       },
+      userRoleList: [],
+      defaultProps: {
+        label: 'role'
+      },
       rules: {
         // change(value值改变)，focus(获到焦点)，blur(失去焦点)
         name: [{ required: true, message: 'name is required', trigger: 'blur' }],
@@ -129,7 +137,11 @@ export default {
         confirmPassword: [{ required: true, message: 'confirmPassword is required', trigger: 'blur' }]
       },
       dialogStatus: '', // dialog状态
-      dialogFormVisible: false // dialog默认不显示
+      dialogVisible: false, // dialog默认不显示
+      userSetRolesCmd: {
+        uid: undefined,
+        roleIds: []
+      }
     }
   },
   created() {
@@ -155,7 +167,7 @@ export default {
     handleAddUser() {
       this.resetTemp()
       this.dialogStatus = 'create'
-      this.dialogFormVisible = true
+      this.dialogVisible = true
       this.$refs['dataForm'].clearValidate()
     },
     addUser() {
@@ -163,7 +175,7 @@ export default {
         if (valid) {
           registerUser(this.userInfo).then(response => {
             this.userInfo = Object.assign({}, response.data)
-            this.dialogFormVisible = false
+            this.dialogVisible = false
             this.$notify({
               title: 'Success',
               message: 'Created Successfully',
@@ -176,10 +188,39 @@ export default {
       })
     },
     handleUpdateUser(row) {
-      alert('待开发')
+      this.dialogStatus = 'update'
+      this.userInfo = {
+        id: row.id,
+        username: row.username,
+        name: row.name
+      }
+      const listRoleQuery = {
+        uid: row.id
+      }
+      this.dialogVisible = true
+      listRoleByUid(listRoleQuery).then(response => {
+        this.userRoleList = response.data
+      })
     },
     updateData() {
-      alert('待开发')
+      const selectRoleIds = []
+      this.$refs.tree.getCheckedNodes().forEach(function(value) {
+        selectRoleIds.push(value.id)
+      })
+      this.userSetRolesCmd = {
+        uid: this.userInfo.id,
+        roleIds: selectRoleIds
+      }
+      setRoles(this.userSetRolesCmd).then(() => {
+        this.dialogVisible = false
+        this.$notify({
+          title: 'Success',
+          message: 'Update Successfully',
+          type: 'success',
+          duration: 2000
+        })
+        this.fetchData()
+      })
     }
   }
 }
