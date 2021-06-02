@@ -82,6 +82,9 @@
         <el-form-item label="Role">
           <el-tree ref="tree" :data="allRoleList" :props="defaultProps" show-checkbox node-key="id" />
         </el-form-item>
+        <el-checkbox-group v-model="userRoleList">
+          <el-checkbox v-for="role in allRoleList" :key="role.id" :label="role.role">{{ role.role }}</el-checkbox>
+        </el-checkbox-group>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">
