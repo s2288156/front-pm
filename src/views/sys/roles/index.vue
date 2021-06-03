@@ -34,16 +34,14 @@
       <el-table-column prop="role" label="角色" align="center" width="300" />
       <el-table-column prop="name" label="角色名称" align="center" width="300" />
       <el-table-column prop="remark" label="备注" align="center" />
-      <el-table-column align="center" label="操作" width="200">
+      <el-table-column align="center" label="操作">
         <template v-slot="{row}">
-          <el-row style="line-height: 40px">
-            <el-button type="primary" size="mini" @click="handleEditRole(row)">
-              {{ titleMap.edit }}
-            </el-button>
-            <el-button type="success" size="mini" @click="handleAssignUser(row)">
-              {{ titleMap.assignUser }}
-            </el-button>
-          </el-row>
+          <el-button type="primary" size="mini" @click="handleEditRole(row)">
+            {{ titleMap.edit }}
+          </el-button>
+          <el-button type="success" size="mini" @click="handleAssignUser(row)">
+            {{ titleMap.assignUser }}
+          </el-button>
           <el-button type="danger" size="mini" @click="deleteRole(row)">
             {{ $t('table.delete') }}
           </el-button>
@@ -153,7 +151,6 @@ export default {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
           addRole(this.roleInfo).then(() => {
-            this.roleInfo = Object.assign({}, response.data)
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
