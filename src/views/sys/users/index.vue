@@ -80,7 +80,7 @@
           <el-input v-model="userInfo.name" />
         </el-form-item>
         <el-form-item label="Role">
-          <el-drag-select v-model="userRoleList" multiple placeholder="请选择">
+          <el-drag-select v-model="userRoleList" multiple collapse-tags placeholder="请选择">
             <el-option v-for="item in allRoleList" :key="item.role" :label="item.role" :value="item.role" />
           </el-drag-select>
         </el-form-item>
