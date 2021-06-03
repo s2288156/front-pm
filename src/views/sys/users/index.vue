@@ -80,11 +80,10 @@
           <el-input v-model="userInfo.name" />
         </el-form-item>
         <el-form-item label="Role">
-          <el-tree ref="tree" :data="allRoleList" :props="defaultProps" show-checkbox node-key="id" />
+          <el-drag-select v-model="userRoleList" multiple placeholder="请选择">
+            <el-option v-for="item in allRoleList" :key="item.role" :label="item.role" :value="item.role" />
+          </el-drag-select>
         </el-form-item>
-        <el-checkbox-group v-model="userRoleList">
-          <el-checkbox v-for="role in allRoleList" :key="role.id" :label="role.role">{{ role.role }}</el-checkbox>
-        </el-checkbox-group>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">
@@ -102,10 +101,11 @@
 import { registerUser, listUser, setRoles } from '@/api/user'
 import { listRoleByUid } from '@/api/role'
 import Pagination from '@/components/Pagination'
+import ElDragSelect from '@/components/DragSelect'
 
 export default {
   name: 'UserList',
-  components: { Pagination },
+  components: { Pagination, ElDragSelect },
   data() {
     return {
       tableKey: 0,
@@ -130,9 +130,7 @@ export default {
       },
       allRoleList: [],
       userRoleList: [],
-      defaultProps: {
-        label: 'role'
-      },
+      userRoleIdList: [],
       rules: {
         // change(value值改变)，focus(获到焦点)，blur(失去焦点)
         name: [{ required: true, message: 'name is required', trigger: 'blur' }],
@@ -191,6 +189,11 @@ export default {
         }
       })
     },
+    resetRoleList() {
+      this.allRoleList = []
+      this.userRoleList = []
+      this.userRoleIdList = []
+    },
     handleUpdateUser(row) {
       this.dialogStatus = 'update'
       this.userInfo = {
@@ -201,28 +204,31 @@ export default {
       const listRoleQuery = {
         uid: row.id
       }
+      this.resetRoleList()
       this.dialogVisible = true
       listRoleByUid([]).then(response => {
         this.allRoleList = response.data
       })
       listRoleByUid(listRoleQuery).then(response => {
-        this.userRoleList = response.data
-      })
-      this.$nextTick(() => {
-        const nodes = [{ id: '2', role: 'GUEST', name: '参观者' }]
-        this.$refs.tree.setCheckedNodes(nodes)
-        console.log(nodes)
+        this.userRoleList = response.data.map(function(item) {
+          return item.role
+        })
+        this.userRoleIdList = response.data.map(function(item) {
+          return item.id
+        })
       })
     },
     updateData() {
-      const selectRoleIds = []
-      this.$refs.tree.getCheckedNodes().forEach(function(value) {
-        selectRoleIds.push(value.id)
-      })
+      const userSelectRoleList = this.userRoleList
       this.userSetRolesCmd = {
         uid: this.userInfo.id,
-        roleIds: selectRoleIds
+        roleIds: this.allRoleList.filter(function(item) {
+          return userSelectRoleList.includes(item.role)
+        }).map(function(item) {
+          return item.id
+        })
       }
+      console.log(this.userSetRolesCmd)
       setRoles(this.userSetRolesCmd).then(() => {
         this.dialogVisible = false
         this.$notify({
