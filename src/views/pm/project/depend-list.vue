@@ -165,7 +165,7 @@ export default {
         confirmButtonText: this.$t('table.confirm'),
         cancelButtonText: this.$t('table.cancel')
       }).then(() => {
-        deleteDepend(id).then(() => {
+        deleteDepend({ id: id }).then(() => {
           this.$message({
             type: 'success',
             message: '删除成功'

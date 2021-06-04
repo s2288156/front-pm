@@ -177,7 +177,7 @@ export default {
         confirmButtonText: this.$t('table.confirm'),
         cancelButtonText: this.$t('table.cancel')
       }).then(() => {
-        deleteRole(row.id).then(() => {
+        deleteRole({ id: row.id }).then(() => {
           this.$notify({
             title: 'Success',
             message: '删除成功',

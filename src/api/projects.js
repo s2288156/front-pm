@@ -42,7 +42,8 @@ export function listDepend(query) {
 
 export function deleteDepend(id) {
   return request({
-    url: '/project/depend/' + id,
-    method: 'delete'
+    url: '/project/depend',
+    method: 'delete',
+    params: id
   })
 }

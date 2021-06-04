@@ -26,8 +26,9 @@ export function addRole(data) {
 
 export function deleteRole(id) {
   return request({
-    url: '/role/' + id,
-    method: 'delete'
+    url: '/role',
+    method: 'delete',
+    params: id
   })
 }
 
