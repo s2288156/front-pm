@@ -18,7 +18,8 @@ export function add(data) {
 
 export function deleteGroup(id) {
   return request({
-    url: '/group/' + id,
-    method: 'delete'
+    url: '/group',
+    method: 'delete',
+    params: id
   })
 }

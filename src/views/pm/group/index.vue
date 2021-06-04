@@ -151,7 +151,7 @@ export default {
       })
     },
     handleDeleteGroup(row) {
-      deleteGroup(row.id).then(() => {
+      deleteGroup({ id: row.id }).then(() => {
         this.$notify({
           title: 'Success',
           message: '组删除成功',
