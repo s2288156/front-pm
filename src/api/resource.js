@@ -15,3 +15,11 @@ export function addResource(data) {
     data
   })
 }
+
+export function deleteResource(id) {
+  return request({
+    url: '/resource',
+    method: 'delete',
+    params: id
+  })
+}

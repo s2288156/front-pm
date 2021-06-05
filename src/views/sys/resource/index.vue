@@ -34,8 +34,8 @@
       <el-table-column prop="url" label="URL" align="center" />
       <el-table-column align="center" label="操作" width="200">
         <template v-slot="{row}">
-          <el-button type="primary" size="mini" @click="handleAddResource(row)">
-            {{ $t('table.edit') }}
+          <el-button type="danger" size="mini" @click="deleteResource(row.id)">
+            {{ $t('table.delete') }}
           </el-button>
         </template>
       </el-table-column>
@@ -76,8 +76,9 @@
 </template>
 
 <script>
-import { pageResource, addResource } from '@/api/resource'
+import { pageResource, addResource, deleteResource } from '@/api/resource'
 import Pagination from '@/components/Pagination'
+import { deleteDepend } from '@/api/projects'
 
 export default {
   name: 'ResourceList',
@@ -160,6 +161,25 @@ export default {
     },
     updateResource() {
       alert('...')
+    },
+    deleteResource(id) {
+      this.$confirm('确认要删除此依赖吗？', '警告', {
+        confirmButtonText: this.$t('table.confirm'),
+        cancelButtonText: this.$t('table.cancel')
+      }).then(() => {
+        deleteResource({ id: id }).then(() => {
+          this.$message({
+            type: 'success',
+            message: '删除成功'
+          })
+          this.fetchData()
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
     }
   }
 }
