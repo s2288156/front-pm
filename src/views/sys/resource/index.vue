@@ -31,11 +31,10 @@
       highlight-current-row
     >
       <el-table-column type="index" :index="1" align="center" label="No." width="60" />
-      <el-table-column prop="id" label="ID" align="center" />
       <el-table-column prop="url" label="URL" align="center" />
       <el-table-column align="center" label="操作" width="200">
         <template v-slot="{row}">
-          <el-button type="primary" size="mini" @click="handleUpdateUser(row)">
+          <el-button type="primary" size="mini" @click="handleAddResource(row)">
             {{ $t('table.edit') }}
           </el-button>
         </template>
@@ -55,15 +54,20 @@
         <el-form-item v-show="dialogStatus==='update'" label="Id" prop="id">
           <span>{{ resourceInfo.id }}</span>
         </el-form-item>
-        <el-form-item label="URL" prop="url">
-          <el-input v-model="resourceInfo.url" />
+        <el-form-item label="Method" prop="requestMethod">
+          <el-select v-model="resourceInfo.requestMethod" placeholder="请选择">
+            <el-option v-for="item in requestMethods" :key="item.method" :label="item.method" :value="item.method" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="Path" prop="apiPath">
+          <el-input v-model="resourceInfo.apiPath" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">
           {{ $t('table.cancel') }}
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?addUser():updateData()">
+        <el-button type="primary" @click="dialogStatus==='create'?addResource():updateResource()">
           {{ $t('table.confirm') }}
         </el-button>
       </div>
@@ -95,17 +99,22 @@ export default {
       },
       rules: {
         // change(value值改变)，focus(获到焦点)，blur(失去焦点)
-        name: [{ required: true, message: 'name is required', trigger: 'blur' }],
-        username: [{ required: true, message: 'username is required', trigger: 'blur' }],
-        password: [{ required: true, message: 'password is required', trigger: 'blur' }],
-        confirmPassword: [{ required: true, message: 'confirmPassword is required', trigger: 'blur' }]
+        requestMethod: [{ required: true, message: 'method is required', trigger: 'blur' }],
+        apiPath: [{ required: true, message: 'uri is required', trigger: 'blur' }]
       },
       dialogStatus: '', // dialog状态
       dialogVisible: false, // dialog默认不显示
       resourceInfo: {
         id: undefined,
-        url: undefined
-      }
+        requestMethod: undefined,
+        apiPath: undefined
+      },
+      requestMethods: [
+        { method: 'GET' },
+        { method: 'POST' },
+        { method: 'PUT' },
+        { method: 'DELETE' }
+      ]
     }
   },
   created() {
@@ -120,7 +129,36 @@ export default {
         this.listLoading = false
       })
     },
+    resetResourceInfo() {
+      this.resourceInfo = {
+        id: undefined,
+        requestMethod: undefined,
+        apiPath: undefined
+      }
+    },
     handleAddResource() {
+      this.resetResourceInfo()
+      this.dialogStatus = 'create'
+      this.dialogVisible = true
+      this.$refs['dataForm'].clearValidate()
+    },
+    addResource() {
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          addResource(this.resourceInfo).then(() => {
+            this.dialogVisible = false
+            this.$notify({
+              title: 'Success',
+              message: 'Created Successfully',
+              type: 'success',
+              duration: 2000
+            })
+            this.fetchData()
+          })
+        }
+      })
+    },
+    updateResource() {
       alert('...')
     }
   }
