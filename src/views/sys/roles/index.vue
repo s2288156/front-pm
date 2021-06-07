@@ -81,14 +81,23 @@
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="setResourcesFormVisible">
       <el-form ref="setResourcesDataForm" :model="setResourcesParams" label-position="left" label-width="100px">
-        <el-transfer v-model="selectedResourcesData" :data="allResourcesData" />
+        <el-transfer v-model="selectedResourcesData" :props="transferProps" :data="allResourcesData" />
       </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="setResourcesFormVisible = false">
+          {{ $t('table.cancel') }}
+        </el-button>
+        <el-button type="primary" @click="assignResource()">
+          {{ $t('table.confirm') }}
+        </el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { pageRole, addRole, deleteRole } from '@/api/role'
+import { pageRole, addRole, deleteRole, setResource } from '@/api/role'
+import { pageResource, listResourceByRole } from '@/api/resource'
 import Pagination from '@/components/Pagination'
 
 export default {
@@ -127,6 +136,10 @@ export default {
         role: [{ required: true, message: 'role is required', trigger: 'blur' }]
       },
       // ======================== setResources相关data ===========================
+      transferProps: {
+        key: 'id',
+        label: 'url'
+      },
       setResourcesFormVisible: false,
       selectedResourcesData: [],
       allResourcesData: [],
@@ -177,11 +190,36 @@ export default {
         }
       })
     },
-    handleAssignResource() {
+    resetResourceParams() {
+      this.setResourcesParams = {
+        roleId: undefined,
+        resourceIds: []
+      }
+    },
+    handleAssignResource(row) {
+      this.resetResourceParams()
+      this.setResourcesParams.roleId = row.id
+      pageResource({ page: 1, limit: 1000 }).then(response => {
+        this.allResourcesData = response.data
+      })
+      listResourceByRole({ page: 1, limit: 1000, roleId: row.id }).then(response => {
+        this.selectedResourcesData = response.data.map(function(item) {
+          return item.id
+        })
+      })
       this.setResourcesFormVisible = true
     },
     assignResource() {
-      alert('待开发')
+      this.setResourcesParams.resourceIds = this.selectedResourcesData.filter(item => item)
+      setResource(this.setResourcesParams).then(() => {
+        this.$notify({
+          title: 'Success',
+          message: '设置成功',
+          type: 'success',
+          duration: 2000
+        })
+        this.setResourcesFormVisible = false
+      })
     },
     handleAssignUser() {
       alert('handle assign user')
