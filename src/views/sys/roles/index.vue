@@ -79,9 +79,11 @@
       </div>
     </el-dialog>
 
-    <el-dialog :title="textMap[dialogStatus]" :visible.sync="setResourcesFormVisible">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="setResourcesFormVisible" width="1400px">
       <el-form ref="setResourcesDataForm" :model="setResourcesParams" label-position="left" label-width="100px">
-        <el-transfer v-model="selectedResourcesData" :props="transferProps" :data="allResourcesData" />
+        <div class="transfer_local">
+          <el-transfer v-model="selectedResourcesData" :props="transferProps" :data="allResourcesData" :titles="transferTitles" />
+        </div>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="setResourcesFormVisible = false">
@@ -140,6 +142,7 @@ export default {
         key: 'id',
         label: 'url'
       },
+      transferTitles: ['未分配', '已分配'],
       setResourcesFormVisible: false,
       selectedResourcesData: [],
       allResourcesData: [],
@@ -248,3 +251,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .transfer_local >>> .el-transfer-panel {
+    width: 550px;
+  }
+</style>
