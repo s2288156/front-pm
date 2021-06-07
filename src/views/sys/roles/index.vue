@@ -36,8 +36,8 @@
       <el-table-column prop="remark" label="备注" align="center" />
       <el-table-column align="center" label="操作">
         <template v-slot="{row}">
-          <el-button type="primary" size="mini" @click="handleEditRole(row)">
-            {{ titleMap.edit }}
+          <el-button type="primary" size="mini" @click="handleAssignResource(row)">
+            {{ titleMap.assignUrl }}
           </el-button>
           <el-button type="success" size="mini" @click="handleAssignUser(row)">
             {{ titleMap.assignUser }}
@@ -58,7 +58,7 @@
     />
 
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="roleInfo" label-position="left" label-width="100px">
+      <el-form ref="dataForm" :rules="addRules" :model="roleInfo" label-position="left" label-width="100px">
         <el-form-item v-show="dialogStatus==='update'" label="Id" prop="id">
           <span>{{ roleInfo.id }}</span>
         </el-form-item>
@@ -73,12 +73,17 @@
         <el-button @click="dialogFormVisible = false">
           {{ $t('table.cancel') }}
         </el-button>
-        <el-button type="primary" @click="dialogStatus==='create'?addRole():updateRole()">
+        <el-button type="primary" @click="dialogStatus==='create'?addRole():assignResource()">
           {{ $t('table.confirm') }}
         </el-button>
       </div>
     </el-dialog>
 
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="setResourcesFormVisible">
+      <el-form ref="setResourcesDataForm" :model="setResourcesParams" label-position="left" label-width="100px">
+        <el-transfer v-model="selectedResourcesData" :data="allResourcesData" />
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -98,7 +103,7 @@ export default {
       titleMap: {
         reload: '刷新',
         add: '新增',
-        edit: '编辑',
+        assignUrl: '分配URL',
         assignUser: '分配用户'
       },
       roleInfo: {
@@ -112,13 +117,22 @@ export default {
       },
       textMap: {
         create: this.$t('table.add'),
-        edit: this.$t('table.edit')
+        edit: this.$t('table.edit'),
+        setResource: '分配Resources'
       },
       dialogFormVisible: false,
-      rules: {
+      addRules: {
         // change(value值改变)，focus(获到焦点)，blur(失去焦点)
         name: [{ required: true, message: 'name is required', trigger: 'blur' }],
         role: [{ required: true, message: 'role is required', trigger: 'blur' }]
+      },
+      // ======================== setResources相关data ===========================
+      setResourcesFormVisible: false,
+      selectedResourcesData: [],
+      allResourcesData: [],
+      setResourcesParams: {
+        roleId: undefined,
+        resourceIds: []
       }
     }
   },
@@ -163,10 +177,10 @@ export default {
         }
       })
     },
-    handleEditRole() {
-      alert('edit role')
+    handleAssignResource() {
+      this.setResourcesFormVisible = true
     },
-    updateRole() {
+    assignResource() {
       alert('待开发')
     },
     handleAssignUser() {
