@@ -8,6 +8,14 @@ export function pageResource(query) {
   })
 }
 
+export function listResourceByRole(query) {
+  return request({
+    url: '/resource/list/by_role',
+    method: 'get',
+    params: query
+  })
+}
+
 export function addResource(data) {
   return request({
     url: '/resource',

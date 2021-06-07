@@ -32,3 +32,10 @@ export function deleteRole(id) {
   })
 }
 
+export function setResource(data) {
+  return request({
+    url: '/role/resource',
+    method: 'post',
+    data
+  })
+}
