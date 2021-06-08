@@ -24,7 +24,7 @@ service.interceptors.request.use(
   },
   error => {
     // do something with request error
-    console.log(error) // for debug
+    // console.log(error.response.status) // for debug
     return Promise.reject(error)
   }
 )
@@ -70,12 +70,20 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error) // for debug
-    Message({
-      message: error,
-      type: 'error',
-      duration: 5 * 1000
-    })
+    // console.log('err' + error) // for debug
+    if (error.response.status === 403) {
+      Message({
+        message: error.response.data.errMessage,
+        type: 'error',
+        duration: 5 * 1000
+      })
+    } else {
+      Message({
+        message: error,
+        type: 'error',
+        duration: 5 * 1000
+      })
+    }
     return Promise.reject(error)
   }
 )
