@@ -193,14 +193,16 @@ export default {
         }
       })
     },
-    resetResourceParams() {
+    resetResourceDatas() {
       this.setResourcesParams = {
         roleId: undefined,
         resourceIds: []
       }
+      this.allResourcesData = []
+      this.selectedResourcesData = []
     },
     handleAssignResource(row) {
-      this.resetResourceParams()
+      this.resetResourceDatas()
       this.setResourcesParams.roleId = row.id
       pageResource({ page: 1, limit: 1000 }).then(response => {
         this.allResourcesData = response.data
